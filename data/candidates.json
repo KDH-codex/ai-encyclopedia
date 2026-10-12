@@ -1,69 +1,43 @@
 [
   {
-    "id": "candidate-grok-3",
-    "name": "Grok 3 (Beta)",
+    "id": "candidate-grok-3-mini",
+    "name": "Grok 3 Mini",
     "type": "model",
     "company": "xAI",
-    "release_date": "2025-02-17",
-    "summary": "xAI의 대규모 컴퓨팅 클러스터(Colossus)에서 훈련된 최신 플래그십 및 심층 사고(Think) 모델",
-    "strengths": [
-      "수학 및 코딩 벤치마크 최고 수준",
-      "Think 모드를 통한 단계별 추론"
-    ],
-    "weaknesses": [
-      "API 접근 권한 및 엔터프라이즈 기능 확장 중"
-    ],
-    "pricing": "확인 중",
+    "release_date": "2025-02-20",
+    "summary": "Grok 3의 심층 추론 능력을 유지하면서 초고속 응답과 높은 비용 효율을 제공하는 경량 모델",
+    "strengths": ["빠른 추론 속도", "높은 가성비", "수학 및 논리 해결"],
+    "weaknesses": ["대규모 멀티모달 처리"],
+    "pricing": "확인 중 (경량 단가)",
     "context_window": "128k 토큰",
-    "tags": [
-      "심층추론",
-      "수학",
-      "코딩"
-    ],
+    "tags": ["가성비", "고속추론", "수학"],
     "source_url": "https://x.ai/blog/grok-3",
     "discovered_at": "2026-10-12",
     "status": "pending_approval"
   },
   {
-    "id": "candidate-deepseek-r1-1791767119",
-    "name": "DeepSeek-R1 (사고 특화 모델)",
-    "type": "model",
-    "company": "DeepSeek",
-    "release_date": "2025-01-20",
-    "summary": "대규모 순수 강화학습(RL)을 통해 오픈소스로 완전 공개된 혁신적 추론 모델",
-    "strengths": [
-      "수학 및 코딩에서 최고 수준 추론 능력",
-      "오픈소스 가중치 공개로 로컬 실행 가능"
-    ],
-    "weaknesses": [
-      "검열 및 정책에 따른 편차",
-      "서버 대기열 병목"
-    ],
-    "pricing": "입력 $0.55 / 출력 $2.19 (1M 토큰당)",
-    "context_window": "64k 토큰",
-    "tags": [
-      "오픈소스추론",
-      "강화학습",
-      "수학코딩"
-    ],
-    "source_url": "https://github.com/deepseek-ai/DeepSeek-R1",
+    "id": "candidate-mcp-linear",
+    "name": "Linear MCP Server",
+    "type": "mcp",
+    "summary": "이슈 트래커 Linear와 연동하여 AI가 직접 프로젝트 이슈를 조회, 생성, 상태 업데이트하는 도구",
+    "protocol": "Model Context Protocol",
+    "maintainer": "커뮤니티 / Linear",
+    "typical_use": "프로젝트 스프린트 관리, 백로그 자동 정리",
+    "tags": ["협업툴", "이슈관리", "프로젝트관리"],
+    "source_url": "https://github.com/jerhadf/linear-mcp-server",
     "discovered_at": "2026-10-12",
     "status": "pending_approval"
   },
   {
-    "id": "candidate-mcp-slack-1791767119",
-    "name": "Slack MCP Server",
+    "id": "candidate-mcp-notion",
+    "name": "Notion MCP Server",
     "type": "mcp",
-    "summary": "AI가 사내 슬랙 채널의 메시지를 읽고 답장을 남길 수 있는 커뮤니케이션 도구",
+    "summary": "노션(Notion) 워크스페이스의 페이지, 데이터베이스를 읽고 새로운 문서를 작성하는 공식/커뮤니티 도구",
     "protocol": "Model Context Protocol",
     "maintainer": "커뮤니티",
-    "typical_use": "팀 협업 채널 모니터링 및 알림 자동 전송",
-    "tags": [
-      "협업툴",
-      "메시징",
-      "자동화"
-    ],
-    "source_url": "https://github.com/modelcontextprotocol/servers",
+    "typical_use": "사내 지식 베이스 검색, 회의록 자동 노션 정리",
+    "tags": ["노트필기", "문서관리", "지식저장"],
+    "source_url": "https://github.com/michaellatman/mcp-notion",
     "discovered_at": "2026-10-12",
     "status": "pending_approval"
   }

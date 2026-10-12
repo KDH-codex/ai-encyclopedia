@@ -18,7 +18,7 @@
     :root {
       --bg-primary: #0b1120;       /* 깊은 심야 네이비 */
       --bg-secondary: #1e293b;     /* 패널/카드 배경 */
-      --bg-card: rgba(15, 23, 42, 0.92);
+      --bg-card: rgba(15, 23, 42, 0.94);
       --border-color: #334155;    /* 테두리 */
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
@@ -55,7 +55,7 @@
        2. 상단 헤더 & 컨트롤 패널 (모바일 가로 스크롤 최적화)
        ========================================================================== */
     header {
-      background-color: rgba(15, 23, 42, 0.95);
+      background-color: rgba(15, 23, 42, 0.96);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-color);
       display: flex;
@@ -103,7 +103,7 @@
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       overflow-x: auto;
       padding-bottom: 2px;
       scrollbar-width: none;
@@ -114,7 +114,7 @@
       background-color: #1e293b;
       color: var(--text-main);
       border: 1px solid var(--border-color);
-      padding: 6px 12px;
+      padding: 6px 11px;
       border-radius: 8px;
       font-size: 12px;
       cursor: pointer;
@@ -132,19 +132,34 @@
     }
 
     .action-btn.primary {
-      background: linear-flex;
       background-color: #2563eb;
       border-color: #3b82f6;
       color: #fff;
     }
 
-    /* 회사별 체크박스 필터 바 (사용자 핵심 요청 사항) */
+    .action-btn.success {
+      background-color: rgba(16, 185, 129, 0.15);
+      border-color: #10b981;
+      color: #34d399;
+      font-weight: 600;
+    }
+
+    .badge-count {
+      background-color: #ef4444;
+      color: #fff;
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    /* 회사별 체크박스 필터 바 */
     .company-filter-bar {
       display: flex;
       align-items: center;
       gap: 6px;
       overflow-x: auto;
-      padding: 4px 0;
+      padding: 3px 0;
       scrollbar-width: none;
     }
     .company-filter-bar::-webkit-scrollbar { display: none; }
@@ -180,9 +195,7 @@
       font-weight: 600;
     }
 
-    .comp-chip input {
-      display: none;
-    }
+    .comp-chip input { display: none; }
 
     /* 실시간 검색 인풋 */
     .search-box {
@@ -198,7 +211,7 @@
       padding: 5px 10px 5px 28px;
       border-radius: 8px;
       font-size: 12px;
-      width: 140px;
+      width: 130px;
       font-family: inherit;
       transition: width 0.2s;
     }
@@ -206,7 +219,7 @@
     .search-box input:focus {
       outline: none;
       border-color: var(--accent);
-      width: 180px;
+      width: 170px;
     }
 
     .search-icon {
@@ -234,11 +247,8 @@
       cursor: grab;
     }
 
-    #graph-container:active {
-      cursor: grabbing;
-    }
+    #graph-container:active { cursor: grabbing; }
 
-    /* D3 그래프 요소 */
     .link {
       stroke: #475569;
       stroke-opacity: 0.6;
@@ -254,9 +264,7 @@
       user-select: none;
     }
 
-    .node {
-      cursor: pointer;
-    }
+    .node { cursor: pointer; }
 
     .node circle {
       stroke-width: 2px;
@@ -278,9 +286,7 @@
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95);
     }
 
-    .dimmed {
-      opacity: 0.12 !important;
-    }
+    .dimmed { opacity: 0.12 !important; }
 
     .highlighted {
       stroke: #38bdf8 !important;
@@ -313,9 +319,7 @@
       overflow-y: auto;
     }
 
-    #detail-panel.open {
-      transform: translateX(0);
-    }
+    #detail-panel.open { transform: translateX(0); }
 
     .panel-header {
       display: flex;
@@ -450,13 +454,13 @@
     }
 
     /* ==========================================================================
-       5. 모달 팝업 스타일 (추론 에포트 가이드 & 모델 스펙 비교)
+       5. 모달 팝업 스타일 (에포트 가이드, 모델 비교, 승인함, 등록폼)
        ========================================================================== */
     .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background-color: rgba(0, 0, 0, 0.75);
+      background-color: rgba(0, 0, 0, 0.78);
       backdrop-filter: blur(6px);
       z-index: 100;
       justify-content: center;
@@ -488,7 +492,7 @@
     }
 
     .modal-title {
-      font-size: 18px;
+      font-size: 17.5px;
       color: #fff;
       font-weight: 700;
       display: flex;
@@ -514,6 +518,82 @@
       color: var(--accent);
       font-weight: 600;
       white-space: nowrap;
+    }
+
+    /* 승인함 카드 목록 스타일 */
+    .candidate-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .candidate-card {
+      background: #1e293b;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 8px;
+    }
+
+    .btn-approve {
+      flex: 1;
+      background: #10b981;
+      color: #fff;
+      border: none;
+      padding: 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-reject {
+      background: #334155;
+      color: #fda4af;
+      border: 1px solid #475569;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    /* 등록 폼 스타일 */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .form-input, .form-select {
+      background: #1e293b;
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+    }
+
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--accent);
     }
 
     /* 플로팅 범례 */
@@ -562,13 +642,21 @@
       </div>
 
       <div class="header-actions">
-        <!-- 추론 에포트 전용 가이드 버튼 (사용자 요청: 그래프 단순화 및 별도 표 정리) -->
+        <!-- 1. 추론 에포트 가이드 -->
         <button class="action-btn primary" id="open-effort-btn">⚡ 추론 에포트 가이드</button>
 
-        <!-- 모델 스펙 비교 모달 열기 버튼 -->
+        <!-- 2. 모델 스펙 비교 -->
         <button class="action-btn" id="open-compare-btn">⚖️ 모델 스펙 비교</button>
 
-        <!-- 실시간 검색 입력창 -->
+        <!-- 3. 후보 승인함 (사용자 요청: 웹 화면에서 원클릭 승인) -->
+        <button class="action-btn success" id="open-inbox-btn">
+          📥 후보 승인함 <span class="badge-count" id="candidate-count">3</span>
+        </button>
+
+        <!-- 4. 새 모델 직접 추가 폼 -->
+        <button class="action-btn" id="open-add-btn">➕ 직접 등록</button>
+
+        <!-- 5. 검색창 -->
         <div class="search-box">
           <span class="search-icon">🔍</span>
           <input type="text" id="search-input" placeholder="모델명, 태그 검색...">
@@ -576,13 +664,12 @@
       </div>
     </div>
 
-    <!-- 회사별 연동 체크박스 바 (사용자 핵심 요청: 회사 선택 시 하위 노드까지 다 연동) -->
+    <!-- 회사별 연동 체크박스 바 -->
     <div class="company-filter-bar" id="company-filter-container">
       <span class="filter-label">🏢 회사 필터:</span>
       <label class="comp-chip active" id="chip-all">
         <input type="checkbox" id="check-all" checked> 전체 선택
       </label>
-      <!-- 자바스크립트로 회사 체크박스 자동 렌더링 -->
     </div>
   </header>
 
@@ -665,7 +752,7 @@
   </main>
 
   <!-- ==========================================================================
-       모달 1: 추론 에포트(Reasoning Effort) 완벽 가이드 & 매트릭스 표
+       모달 1: 추론 에포트(Reasoning Effort) 완벽 가이드
        ========================================================================== -->
   <div class="modal-overlay" id="effort-modal">
     <div class="modal-box">
@@ -675,7 +762,6 @@
       </div>
       <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
         <strong>추론 에포트(Reasoning Effort)란?</strong> 모델이 최종 답변을 내놓기 전, 스스로 생각(Chain-of-Thought)을 전개하는 깊이와 시간을 제어하는 기술입니다.
-        단순 대화에서는 사고를 꺼서 비용과 시간을 아끼고, 복잡한 코딩이나 수학 문제에서는 사고 예산(Thinking Budget)을 확장하여 정확도를 극대화합니다.
       </p>
 
       <table class="data-table">
@@ -768,10 +854,6 @@
         <h2 class="modal-title">⚖️ 최신 2025-2026 플래그십 AI 모델 종합 스펙 비교</h2>
         <button class="close-btn" id="close-compare-btn">✕</button>
       </div>
-      <p style="font-size: 12px; color: var(--text-muted);">
-        글로벌 대표 모델들의 출시일, 컨텍스트 용량, 1M 토큰당 가격, 추천 핵심 용도를 한눈에 비교합니다.
-      </p>
-
       <table class="data-table">
         <thead>
           <tr>
@@ -783,15 +865,91 @@
             <th>추천 핵심 용도</th>
           </tr>
         </thead>
-        <tbody id="compare-table-body">
-          <!-- 자바스크립트로 동적 렌더링 -->
-        </tbody>
+        <tbody id="compare-table-body"></tbody>
       </table>
     </div>
   </div>
 
   <!-- ==========================================================================
-       자바스크립트 로직: D3 Force Graph + 회사 체크박스 연동 필터 + 모달 제어
+       모달 3: 📥 후보 승인함 모달 (원클릭 승인 & 기각)
+       ========================================================================== -->
+  <div class="modal-overlay" id="inbox-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 class="modal-title">📥 신규 모델 / MCP 후보 검토 & 승인함</h2>
+        <button class="close-btn" id="close-inbox-btn">✕</button>
+      </div>
+      <p style="font-size: 12px; color: var(--text-muted);">
+        Google Gemini 검색 및 주간 자동 탐색으로 수집된 신작 후보들입니다. <strong>[✓ 승인]</strong>을 터치하면 지식 그래프에 즉시 추가됩니다!
+      </p>
+
+      <div class="candidate-grid" id="candidate-list-container">
+        <!-- 자바스크립트로 동적 렌더링 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       모달 4: ➕ 새 모델 / MCP 도구 직접 등록 모달
+       ========================================================================== -->
+  <div class="modal-overlay" id="add-modal">
+    <div class="modal-box" style="max-width: 520px;">
+      <div class="modal-header">
+        <h2 class="modal-title">➕ 새 AI 모델 또는 MCP 도구 직접 등록</h2>
+        <button class="close-btn" id="close-add-btn">✕</button>
+      </div>
+      <form id="new-node-form">
+        <div class="form-group">
+          <label class="form-label">노드 유형</label>
+          <select class="form-select" id="new-node-type">
+            <option value="model">🧠 AI 모델 (Model)</option>
+            <option value="mcp">🔌 MCP 도구 (Server)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">이름 / 명칭 *</label>
+          <input type="text" class="form-input" id="new-node-name" placeholder="예: LLaMA 3.3 70B" required>
+        </div>
+        <div class="form-group" id="form-group-company">
+          <label class="form-label">개발사 선택</label>
+          <select class="form-select" id="new-node-company">
+            <option value="comp-anthropic">Anthropic</option>
+            <option value="comp-openai">OpenAI</option>
+            <option value="comp-google">Google</option>
+            <option value="comp-deepseek">DeepSeek</option>
+            <option value="comp-xai">xAI</option>
+            <option value="comp-meta">Meta</option>
+            <option value="comp-moonshot">Moonshot AI</option>
+            <option value="comp-alibaba">Alibaba Cloud</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">한 줄 요약 *</label>
+          <input type="text" class="form-input" id="new-node-summary" placeholder="핵심 특징과 용도를 요약해주세요" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">컨텍스트 창 크기</label>
+          <input type="text" class="form-input" id="new-node-context" placeholder="예: 128k 토큰">
+        </div>
+        <div class="form-group">
+          <label class="form-label">1M 토큰당 가격</label>
+          <input type="text" class="form-input" id="new-node-pricing" placeholder="예: 입력 $0.5 / 출력 $1.5">
+        </div>
+        <div class="form-group">
+          <label class="form-label">추천 용도 태그 (쉼표로 구분)</label>
+          <input type="text" class="form-input" id="new-node-tags" placeholder="코딩, 추론, 가성비">
+        </div>
+        <div style="margin-top: 14px; display: flex; gap: 8px;">
+          <button type="submit" class="action-btn primary" style="flex: 1; padding: 10px; justify-content: center; font-size: 13px;">
+            ✨ 지식 그래프에 즉시 추가
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       자바스크립트 로직
        ========================================================================== -->
   <script>
     const typeColorMap = {
@@ -810,7 +968,8 @@
 
     let globalNodes = [];
     let globalEdges = [];
-    let selectedCompanies = new Set(); // 선택된 회사 ID 목록
+    let globalCandidates = [];
+    let selectedCompanies = new Set();
     let simulation = null;
     let svg = null;
     let container = null;
@@ -818,33 +977,30 @@
     let nodeElements = null;
     let labelElements = null;
 
-    // 데이터 로드
     async function loadData() {
       try {
-        const [nodesRes, edgesRes] = await Promise.all([
+        const [nodesRes, edgesRes, candRes] = await Promise.all([
           fetch('./data/nodes.json'),
-          fetch('./data/edges.json')
+          fetch('./data/edges.json'),
+          fetch('./data/candidates.json')
         ]);
-        if (!nodesRes.ok || !edgesRes.ok) throw new Error("Fetch failed");
-        globalNodes = await nodesRes.json();
-        globalEdges = await edgesRes.json();
+        if (nodesRes.ok) globalNodes = await nodesRes.json();
+        if (edgesRes.ok) globalEdges = await edgesRes.json();
+        if (candRes.ok) globalCandidates = await candRes.json();
       } catch (err) {
-        console.warn("fetch 실패, 내장 데이터로 전환:", err);
+        console.warn("fetch 실패, 로컬 상태 유지:", err);
       }
 
-      // 회사 목록 추출 및 체크박스 필터 생성
       initCompanyFilters();
       initGraph(globalNodes, globalEdges);
       setupEventListeners();
       populateCompareTable();
+      renderCandidateInbox();
     }
 
-    // 1. 회사별 체크박스 필터 바 동적 생성
     function initCompanyFilters() {
       const container = document.getElementById('company-filter-container');
       const companies = globalNodes.filter(n => n.type === 'company');
-
-      // 모든 회사를 기본 선택 상태로 등록
       companies.forEach(c => selectedCompanies.add(c.id));
 
       companies.forEach(c => {
@@ -865,7 +1021,6 @@
             selectedCompanies.delete(c.id);
             label.classList.remove('active');
           }
-          // 전체 선택 체크박스 상태 동기화
           document.getElementById('check-all').checked = (selectedCompanies.size === companies.length);
           document.getElementById('chip-all').classList.toggle('active', selectedCompanies.size === companies.length);
           applyFilters();
@@ -876,7 +1031,6 @@
         container.appendChild(label);
       });
 
-      // '전체 선택' 체크박스 동작
       const checkAll = document.getElementById('check-all');
       checkAll.addEventListener('change', (e) => {
         const checked = e.target.checked;
@@ -884,8 +1038,7 @@
         const inputs = container.querySelectorAll('input[type="checkbox"]:not(#check-all)');
         inputs.forEach(input => {
           input.checked = checked;
-          const chip = input.parentElement;
-          chip.classList.toggle('active', checked);
+          input.parentElement.classList.toggle('active', checked);
           const cId = input.dataset.compId;
           if (checked) selectedCompanies.add(cId);
           else selectedCompanies.delete(cId);
@@ -894,7 +1047,6 @@
       });
     }
 
-    // 2. D3 그래프 초기화
     function initGraph(nodesData, edgesData) {
       const containerElement = document.getElementById('graph-container');
       const width = containerElement.clientWidth || window.innerWidth;
@@ -1044,26 +1196,19 @@
       linkElements.classed('highlighted', false);
     }
 
-    // ==========================================================================
-    // 3. 필터링 및 회사 체크박스 연동 (하위 모델 노드 연쇄 숨김/표시)
-    // ==========================================================================
     function isNodeVisible(node, keyword) {
-      // 1) 회사 체크박스 연동 검사
       if (node.type === 'company') {
         if (!selectedCompanies.has(node.id)) return false;
       } else if (node.type === 'model') {
-        // 모델인 경우 소속 회사가 체크 해제되어 있으면 함께 숨김!
         if (node.company && !selectedCompanies.has(node.company)) return false;
       }
 
-      // 2) 실시간 검색어 검사
       if (keyword) {
         const nameMatch = node.name && node.name.toLowerCase().includes(keyword);
         const summaryMatch = node.summary && node.summary.toLowerCase().includes(keyword);
         const tagMatch = node.tags && node.tags.some(t => t.toLowerCase().includes(keyword));
         if (!(nameMatch || summaryMatch || tagMatch)) return false;
       }
-
       return true;
     }
 
@@ -1091,9 +1236,6 @@
       });
     }
 
-    // ==========================================================================
-    // 4. 상세 카드 패널 열기/닫기
-    // ==========================================================================
     function openDetailPanel(node) {
       const panel = document.getElementById('detail-panel');
       const badge = document.getElementById('card-type-badge');
@@ -1206,42 +1348,158 @@
     }
 
     // ==========================================================================
-    // 5. 모달 및 이벤트 리스너 설정
+    // 6. 후보 승인함 렌더링 & 원클릭 승인/기각 로직
+    // ==========================================================================
+    function renderCandidateInbox() {
+      const container = document.getElementById('candidate-list-container');
+      const badge = document.getElementById('candidate-count');
+      badge.textContent = globalCandidates.length;
+
+      container.innerHTML = '';
+      if (globalCandidates.length === 0) {
+        container.innerHTML = '<div style="color: var(--text-muted); padding: 20px; grid-column: 1/-1; text-align: center;">현재 대기 중인 신규 후보가 없습니다. 주간 자동 탐색이 새로운 모델을 발견하면 이곳에 나타납니다!</div>';
+        return;
+      }
+
+      globalCandidates.forEach((item, idx) => {
+        const card = document.createElement('div');
+        card.className = 'candidate-card';
+        card.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <strong style="color: #fff; font-size: 15px;">${item.name}</strong>
+            <span style="font-size: 10px; background: #334155; color: #38bdf8; padding: 2px 6px; border-radius: 6px;">${item.type.toUpperCase()}</span>
+          </div>
+          <div style="font-size: 11px; color: var(--text-muted);">개발사: ${item.company || '커뮤니티'} | 발견: ${item.discovered_at || '2026-10-12'}</div>
+          <p style="font-size: 12px; color: #cbd5e1; line-height: 1.4;">${item.summary}</p>
+          <div style="font-size: 11px; color: #38bdf8;">${item.pricing ? '가격: ' + item.pricing : ''} ${item.context_window ? ' | 창: ' + item.context_window : ''}</div>
+          <div class="card-actions">
+            <button class="btn-approve" onclick="approveCandidate(${idx})">✓ 승인 (그래프 추가)</button>
+            <button class="btn-reject" onclick="rejectCandidate(${idx})">✕ 기각</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // 웹 화면에서 원클릭 승인
+    window.approveCandidate = function(index) {
+      const item = globalCandidates[index];
+      if (!item) return;
+
+      const newNode = {
+        id: item.id || `node-${Date.now()}`,
+        name: item.name,
+        type: item.type,
+        company: item.company ? `comp-${item.company.toLowerCase().replace(/[^a-z]/g, '')}` : undefined,
+        summary: item.summary,
+        release_date: item.release_date || '2026-10-12',
+        pricing: item.pricing || '-',
+        context_window: item.context_window || '-',
+        tags: item.tags || [],
+        source_url: item.source_url || '#',
+        last_verified: '2026-10-12'
+      };
+
+      globalNodes.push(newNode);
+
+      // 개발사 또는 MCP 기본 연결선 추가
+      if (item.type === 'model' && newNode.company) {
+        globalEdges.push({ source: newNode.id, target: newNode.company, relation: 'developed_by', label: '개발사' });
+      } else if (item.type === 'mcp') {
+        globalEdges.push({ source: newNode.id, target: 'concept-mcp', relation: 'relates_to', label: 'MCP 구현체' });
+      }
+
+      // 후보 목록에서 제거
+      globalCandidates.splice(index, 1);
+      renderCandidateInbox();
+
+      // 그래프 실시간 리프레시
+      initGraph(globalNodes, globalEdges);
+      populateCompareTable();
+      alert(`🎉 '${newNode.name}' 노드가 지식 그래프에 실시간으로 승인 추가되었습니다!`);
+    };
+
+    window.rejectCandidate = function(index) {
+      const item = globalCandidates[index];
+      if (confirm(`'${item.name}' 후보를 기각하고 삭제하시겠습니까?`)) {
+        globalCandidates.splice(index, 1);
+        renderCandidateInbox();
+      }
+    };
+
+    // ==========================================================================
+    // 7. 모달 이벤트 & 새 모델 직접 등록 폼 처리
     // ==========================================================================
     function setupEventListeners() {
       document.getElementById('close-panel-btn').addEventListener('click', closeDetailPanel);
       document.getElementById('search-input').addEventListener('input', applyFilters);
 
-      // 추론 에포트 가이드 모달
+      // 에포트 가이드 모달
       const effortModal = document.getElementById('effort-modal');
-      document.getElementById('open-effort-btn').addEventListener('click', () => {
-        effortModal.style.display = 'flex';
-      });
-      document.getElementById('close-effort-btn').addEventListener('click', () => {
-        effortModal.style.display = 'none';
-      });
-      effortModal.addEventListener('click', (e) => {
-        if (e.target === effortModal) effortModal.style.display = 'none';
-      });
+      document.getElementById('open-effort-btn').addEventListener('click', () => effortModal.style.display = 'flex');
+      document.getElementById('close-effort-btn').addEventListener('click', () => effortModal.style.display = 'none');
+      effortModal.addEventListener('click', e => { if (e.target === effortModal) effortModal.style.display = 'none'; });
 
-      // 모델 스펙 비교 모달
+      // 모델 비교 모달
       const compareModal = document.getElementById('compare-modal');
-      document.getElementById('open-compare-btn').addEventListener('click', () => {
-        compareModal.style.display = 'flex';
-      });
-      document.getElementById('close-compare-btn').addEventListener('click', () => {
-        compareModal.style.display = 'none';
-      });
-      compareModal.addEventListener('click', (e) => {
-        if (e.target === compareModal) compareModal.style.display = 'none';
+      document.getElementById('open-compare-btn').addEventListener('click', () => compareModal.style.display = 'flex');
+      document.getElementById('close-compare-btn').addEventListener('click', () => compareModal.style.display = 'none');
+      compareModal.addEventListener('click', e => { if (e.target === compareModal) compareModal.style.display = 'none'; });
+
+      // 후보 승인함 모달
+      const inboxModal = document.getElementById('inbox-modal');
+      document.getElementById('open-inbox-btn').addEventListener('click', () => inboxModal.style.display = 'flex');
+      document.getElementById('close-inbox-btn').addEventListener('click', () => inboxModal.style.display = 'none');
+      inboxModal.addEventListener('click', e => { if (e.target === inboxModal) inboxModal.style.display = 'none'; });
+
+      // 직접 등록 모달
+      const addModal = document.getElementById('add-modal');
+      document.getElementById('open-add-btn').addEventListener('click', () => addModal.style.display = 'flex');
+      document.getElementById('close-add-btn').addEventListener('click', () => addModal.style.display = 'none');
+      addModal.addEventListener('click', e => { if (e.target === addModal) addModal.style.display = 'none'; });
+
+      // 직접 등록 폼 제출 핸들링
+      document.getElementById('new-node-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const type = document.getElementById('new-node-type').value;
+        const name = document.getElementById('new-node-name').value.trim();
+        const company = document.getElementById('new-node-company').value;
+        const summary = document.getElementById('new-node-summary').value.trim();
+        const context = document.getElementById('new-node-context').value.trim();
+        const pricing = document.getElementById('new-node-pricing').value.trim();
+        const tags = document.getElementById('new-node-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+
+        const newId = `user-node-${Date.now()}`;
+        const newNode = {
+          id: newId,
+          name: name,
+          type: type,
+          company: type === 'model' ? company : undefined,
+          summary: summary,
+          context_window: context || '128k 토큰',
+          pricing: pricing || '확인 필요',
+          tags: tags,
+          last_verified: '2026-10-12'
+        };
+
+        globalNodes.push(newNode);
+        if (type === 'model') {
+          globalEdges.push({ source: newId, target: company, relation: 'developed_by', label: '개발사' });
+        } else {
+          globalEdges.push({ source: newId, target: 'concept-mcp', relation: 'relates_to', label: 'MCP 도구' });
+        }
+
+        initGraph(globalNodes, globalEdges);
+        populateCompareTable();
+        addModal.style.display = 'none';
+        document.getElementById('new-node-form').reset();
+        alert(`✨ '${name}' 항목이 지식 그래프에 성공적으로 등록되었습니다!`);
       });
     }
 
-    // 모델 비교 테이블 렌더링
     function populateCompareTable() {
       const tbody = document.getElementById('compare-table-body');
       tbody.innerHTML = '';
-
       const models = globalNodes.filter(n => n.type === 'model');
       models.forEach(m => {
         const tr = document.createElement('tr');
