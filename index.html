@@ -2,42 +2,42 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI 백과사전 - 모델 & MCP 지식 그래프</title>
-  <!-- D3.js v7 라이브러리 (안정적이고 강력한 노드 네트워크 그래프 시각화) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AI 백과사전 - 2026 AI 모델 & MCP 지식 그래프</title>
+  <!-- D3.js v7 라이브러리 -->
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <!-- Google Fonts: 가독성 높은 Noto Sans KR 및 JetBrains Mono -->
+  <!-- Google Fonts: Noto Sans KR & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
   <style>
     /* ==========================================================================
-       1. 디자인 시스템 및 CSS 변수 설정 (다크 모드 기본, 세련된 네온 글래스 테마)
+       1. 디자인 시스템 & CSS 변수 (다크 테마 + 네온 액센트)
        ========================================================================== */
     :root {
-      --bg-primary: #0f172a;       /* 짙은 네이비 배경 */
-      --bg-secondary: #1e293b;     /* 패널 및 카드 배경 */
-      --bg-card: rgba(30, 41, 59, 0.88);
-      --border-color: #334155;    /* 경계선 색상 */
-      --text-main: #f8fafc;        /* 기본 텍스트 (흰색) */
-      --text-muted: #94a3b8;       /* 보조 텍스트 (연회색) */
-      --accent: #38bdf8;           /* 강조 하늘색 */
+      --bg-primary: #0b1120;       /* 깊은 심야 네이비 */
+      --bg-secondary: #1e293b;     /* 패널/카드 배경 */
+      --bg-card: rgba(15, 23, 42, 0.92);
+      --border-color: #334155;    /* 테두리 */
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;           /* 시안 하늘색 */
 
-      /* 노드 타입별 컬러 테마 (직관적 식별용) */
+      /* 노드 컬러 테마 */
       --color-company: #64748b;    /* 회사: 슬레이트 그레이 */
-      --color-model: #818cf8;      /* 모델: 인디고/보라 */
-      --color-effort: #f59e0b;     /* 에포트(추론): 앰버/주황 */
-      --color-mcp: #10b981;        /* MCP 서버: 에메랄드 그린 */
-      --color-concept: #06b6d4;    /* 핵심 개념: 청록/사이언 */
+      --color-model: #818cf8;      /* 모델: 인디고 보라 */
+      --color-mcp: #10b981;        /* MCP: 에메랄드 그린 */
+      --color-concept: #06b6d4;    /* 개념: 청록 사이언 */
 
-      --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -52,90 +52,142 @@
     }
 
     /* ==========================================================================
-       2. 상단 네비게이션 헤더 및 필터/검색 바
+       2. 상단 헤더 & 컨트롤 패널 (모바일 가로 스크롤 최적화)
        ========================================================================== */
     header {
-      height: 64px;
       background-color: rgba(15, 23, 42, 0.95);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-color);
       display: flex;
+      flex-direction: column;
+      padding: 10px 16px;
+      gap: 10px;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+
+    .header-top {
+      display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 24px;
-      z-index: 10;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
     }
 
     .brand-icon {
-      font-size: 24px;
+      font-size: 22px;
     }
 
     .brand-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.3px;
     }
 
-    .brand-subtitle {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-left: 8px;
-      padding: 2px 8px;
-      background: #1e293b;
+    .brand-badge {
+      font-size: 11px;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.12);
+      padding: 2px 7px;
       border-radius: 12px;
-      border: 1px solid var(--border-color);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      font-weight: 600;
     }
 
-    .controls-container {
+    .header-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
     }
+    .header-actions::-webkit-scrollbar { display: none; }
 
-    /* 필터 버튼 그룹 */
-    .filter-group {
-      display: flex;
-      background-color: var(--bg-secondary);
-      border-radius: 8px;
-      padding: 3px;
+    .action-btn {
+      background-color: #1e293b;
+      color: var(--text-main);
       border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
 
-    .filter-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      padding: 6px 12px;
-      font-size: 13px;
-      font-weight: 500;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.2s ease;
+    .action-btn:hover, .action-btn:active {
+      background-color: #334155;
+      border-color: var(--accent);
+    }
+
+    .action-btn.primary {
+      background: linear-flex;
+      background-color: #2563eb;
+      border-color: #3b82f6;
+      color: #fff;
+    }
+
+    /* 회사별 체크박스 필터 바 (사용자 핵심 요청 사항) */
+    .company-filter-bar {
       display: flex;
       align-items: center;
       gap: 6px;
+      overflow-x: auto;
+      padding: 4px 0;
+      scrollbar-width: none;
+    }
+    .company-filter-bar::-webkit-scrollbar { display: none; }
+
+    .filter-label {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+      white-space: nowrap;
+      margin-right: 4px;
     }
 
-    .filter-btn:hover {
-      color: var(--text-main);
+    .comp-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background-color: #1e293b;
+      border: 1px solid var(--border-color);
+      padding: 4px 10px;
+      border-radius: 14px;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+      transition: all 0.2s ease;
     }
 
-    .filter-btn.active {
-      background-color: #3b82f6;
-      color: #ffffff;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    .comp-chip.active {
+      background-color: rgba(56, 189, 248, 0.15);
+      border-color: #38bdf8;
+      color: #38bdf8;
+      font-weight: 600;
     }
 
-    /* 검색창 인풋 */
+    .comp-chip input {
+      display: none;
+    }
+
+    /* 실시간 검색 인풋 */
     .search-box {
       position: relative;
-      display: flex;
+      display: inline-flex;
       align-items: center;
     }
 
@@ -143,55 +195,37 @@
       background-color: var(--bg-secondary);
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      padding: 7px 14px 7px 34px;
+      padding: 5px 10px 5px 28px;
       border-radius: 8px;
-      font-size: 13px;
-      width: 190px;
-      transition: all 0.2s ease;
+      font-size: 12px;
+      width: 140px;
       font-family: inherit;
+      transition: width 0.2s;
     }
 
     .search-box input:focus {
       outline: none;
       border-color: var(--accent);
-      width: 240px;
+      width: 180px;
     }
 
     .search-icon {
       position: absolute;
-      left: 10px;
+      left: 8px;
       color: var(--text-muted);
-      font-size: 14px;
+      font-size: 12px;
       pointer-events: none;
     }
 
-    .action-btn {
-      background-color: #334155;
-      color: var(--text-main);
-      border: 1px solid var(--border-color);
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 13px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: background-color 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .action-btn:hover {
-      background-color: #475569;
-    }
-
     /* ==========================================================================
-       3. 메인 작업 영역 (SVG 그래프 + 우측 슬라이드 패널)
+       3. 메인 작업 영역: SVG Force Directed Network Graph
        ========================================================================== */
     main {
       flex: 1;
       position: relative;
       width: 100%;
-      height: calc(100vh - 64px);
+      height: 100%;
+      overflow: hidden;
     }
 
     #graph-container {
@@ -204,7 +238,7 @@
       cursor: grabbing;
     }
 
-    /* D3 그래프 요소 스타일 */
+    /* D3 그래프 요소 */
     .link {
       stroke: #475569;
       stroke-opacity: 0.6;
@@ -213,7 +247,7 @@
     }
 
     .link-label {
-      font-size: 10px;
+      font-size: 9.5px;
       fill: var(--text-muted);
       text-anchor: middle;
       pointer-events: none;
@@ -222,32 +256,30 @@
 
     .node {
       cursor: pointer;
-      transition: transform 0.2s ease;
     }
 
     .node circle {
-      stroke-width: 2.5px;
+      stroke-width: 2px;
       transition: all 0.2s ease;
     }
 
     .node:hover circle {
-      stroke-width: 4px;
+      stroke-width: 3.5px;
       filter: drop-shadow(0 0 8px currentColor);
     }
 
     .node text {
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 500;
       fill: #f1f5f9;
       text-anchor: middle;
       pointer-events: none;
       user-select: none;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95);
     }
 
-    /* 선택/호버 효과 */
     .dimmed {
-      opacity: 0.15 !important;
+      opacity: 0.12 !important;
     }
 
     .highlighted {
@@ -257,24 +289,25 @@
     }
 
     /* ==========================================================================
-       4. 우측 상세 정보 슬라이드 카드 패널 (Drawer)
+       4. 우측 상세 정보 슬라이드 카드 패널 (모바일 반응형 완벽 대응)
        ========================================================================== */
     #detail-panel {
       position: absolute;
-      top: 16px;
-      right: 16px;
-      width: 430px;
-      max-height: calc(100vh - 96px);
+      top: 12px;
+      right: 12px;
+      width: 400px;
+      max-width: calc(100vw - 24px);
+      max-height: calc(100vh - 120px);
       background: var(--bg-card);
       backdrop-filter: blur(16px);
       border: 1px solid var(--border-color);
       border-radius: 16px;
       box-shadow: var(--shadow-lg);
-      padding: 24px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      transform: translateX(460px);
+      gap: 14px;
+      transform: translateX(440px);
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 20;
       overflow-y: auto;
@@ -289,22 +322,21 @@
       align-items: flex-start;
       justify-content: space-between;
       border-bottom: 1px solid var(--border-color);
-      padding-bottom: 12px;
+      padding-bottom: 10px;
     }
 
     .type-badge {
       display: inline-block;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 600;
       padding: 3px 8px;
       border-radius: 12px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .panel-title {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
       color: #ffffff;
       line-height: 1.3;
@@ -314,31 +346,30 @@
       background: transparent;
       border: none;
       color: var(--text-muted);
-      font-size: 20px;
+      font-size: 22px;
       cursor: pointer;
-      line-height: 1;
-      padding: 4px;
-      border-radius: 4px;
+      padding: 4px 8px;
+      border-radius: 6px;
     }
 
     .close-btn:hover {
-      color: #ffffff;
+      color: #fff;
       background-color: #334155;
     }
 
     .panel-body {
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      font-size: 13.5px;
-      line-height: 1.6;
+      gap: 12px;
+      font-size: 13px;
+      line-height: 1.55;
     }
 
     .info-section {
       background-color: rgba(15, 23, 42, 0.6);
       border: 1px solid rgba(51, 65, 85, 0.6);
       border-radius: 10px;
-      padding: 12px 14px;
+      padding: 10px 12px;
     }
 
     .info-label {
@@ -346,33 +377,29 @@
       color: var(--text-muted);
       font-weight: 600;
       text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-
-    .info-content {
-      color: var(--text-main);
+      margin-bottom: 3px;
     }
 
     .tag-container {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 4px;
+      gap: 5px;
+      margin-top: 3px;
     }
 
     .tag {
       background: #334155;
       color: #38bdf8;
       font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 6px;
+      padding: 2px 7px;
+      border-radius: 5px;
     }
 
     .list-item {
       display: flex;
       align-items: flex-start;
       gap: 6px;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .list-item::before {
@@ -384,16 +411,16 @@
     .related-links {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
     }
 
     .related-btn {
       background: #1e293b;
       border: 1px solid #475569;
       color: #e2e8f0;
-      padding: 4px 10px;
+      padding: 4px 8px;
       border-radius: 6px;
-      font-size: 12px;
+      font-size: 11.5px;
       cursor: pointer;
       transition: all 0.2s;
     }
@@ -401,16 +428,16 @@
     .related-btn:hover {
       background: #3b82f6;
       border-color: #3b82f6;
-      color: #ffffff;
+      color: #fff;
     }
 
     .panel-footer {
       border-top: 1px solid var(--border-color);
-      padding-top: 12px;
+      padding-top: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 11.5px;
+      font-size: 11px;
       color: var(--text-muted);
     }
 
@@ -419,50 +446,13 @@
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-    }
-
-    .source-link:hover {
-      text-decoration: underline;
+      gap: 3px;
     }
 
     /* ==========================================================================
-       5. 범례(Legend) 및 도움말 플로팅 위젯
+       5. 모달 팝업 스타일 (추론 에포트 가이드 & 모델 스펙 비교)
        ========================================================================== */
-    .legend-card {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      background: var(--bg-card);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 12px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      font-size: 12px;
-      box-shadow: var(--shadow-lg);
-      z-index: 5;
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-muted);
-    }
-
-    .legend-color {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
-
-    /* ==========================================================================
-       6. 모델 비교 모달 (Comparison Modal)
-       ========================================================================== */
-    #compare-modal {
+    .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
@@ -471,80 +461,128 @@
       z-index: 100;
       justify-content: center;
       align-items: center;
-      padding: 24px;
+      padding: 16px;
     }
 
-    .modal-content {
+    .modal-box {
       background: #0f172a;
       border: 1px solid var(--border-color);
       border-radius: 16px;
-      width: 90%;
-      max-width: 960px;
+      width: 95%;
+      max-width: 1000px;
       max-height: 85vh;
       overflow-y: auto;
-      padding: 24px;
+      padding: 22px;
       box-shadow: var(--shadow-lg);
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
-    .compare-table {
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      color: #fff;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .data-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 12px;
-      font-size: 13px;
+      margin-top: 8px;
+      font-size: 12.5px;
     }
 
-    .compare-table th, .compare-table td {
+    .data-table th, .data-table td {
       border: 1px solid var(--border-color);
-      padding: 10px 14px;
+      padding: 9px 12px;
       text-align: left;
     }
 
-    .compare-table th {
+    .data-table th {
       background-color: #1e293b;
       color: var(--accent);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* 플로팅 범례 */
+    .legend-card {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 11px;
+      box-shadow: var(--shadow-lg);
+      z-index: 5;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+    }
+
+    .legend-color {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
     }
   </style>
 </head>
 <body>
 
   <!-- ==========================================================================
-       상단 내비게이션 바 (필터, 검색, 비교 모달 열기, JSON 파일 열기)
+       상단 내비게이션 바 (필터, 회사별 체크박스, 모달 버튼)
        ========================================================================== -->
   <header>
-    <div class="brand">
-      <span class="brand-icon">🌐</span>
-      <h1 class="brand-title">AI 백과사전 지식 그래프</h1>
-      <span class="brand-subtitle">AI 모델 · 추론 에포트 · MCP 생태계</span>
+    <div class="header-top">
+      <div class="brand">
+        <span class="brand-icon">🌐</span>
+        <h1 class="brand-title">AI 백과사전 지식 그래프</h1>
+        <span class="brand-badge">2026 최신판</span>
+      </div>
+
+      <div class="header-actions">
+        <!-- 추론 에포트 전용 가이드 버튼 (사용자 요청: 그래프 단순화 및 별도 표 정리) -->
+        <button class="action-btn primary" id="open-effort-btn">⚡ 추론 에포트 가이드</button>
+
+        <!-- 모델 스펙 비교 모달 열기 버튼 -->
+        <button class="action-btn" id="open-compare-btn">⚖️ 모델 스펙 비교</button>
+
+        <!-- 실시간 검색 입력창 -->
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" placeholder="모델명, 태그 검색...">
+        </div>
+      </div>
     </div>
 
-    <div class="controls-container">
-      <!-- 노드 종류별 필터 버튼 -->
-      <div class="filter-group">
-        <button class="filter-btn active" data-type="all">전체 보기</button>
-        <button class="filter-btn" data-type="company">🏢 회사</button>
-        <button class="filter-btn" data-type="model">🧠 모델</button>
-        <button class="filter-btn" data-type="effort">⚡ 에포트(추론)</button>
-        <button class="filter-btn" data-type="mcp">🔌 MCP</button>
-        <button class="filter-btn" data-type="concept">💡 개념</button>
-      </div>
-
-      <!-- 실시간 검색 입력창 -->
-      <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="search-input" placeholder="이름, 태그, 요약 검색...">
-      </div>
-
-      <!-- 모델 스펙 비교 모달 열기 버튼 -->
-      <button class="action-btn" id="open-compare-btn">⚖️ 모델 스펙 비교</button>
-
-      <!-- 사용자 정의 JSON 직접 불러오기 지원 (더블 클릭 환경 보조) -->
-      <label class="action-btn" style="cursor: pointer;" title="직접 수정한 nodes.json 파일을 불러와 즉시 반영합니다.">
-        📂 JSON 불러오기
-        <input type="file" id="json-file-input" accept=".json" style="display: none;">
+    <!-- 회사별 연동 체크박스 바 (사용자 핵심 요청: 회사 선택 시 하위 노드까지 다 연동) -->
+    <div class="company-filter-bar" id="company-filter-container">
+      <span class="filter-label">🏢 회사 필터:</span>
+      <label class="comp-chip active" id="chip-all">
+        <input type="checkbox" id="check-all" checked> 전체 선택
       </label>
+      <!-- 자바스크립트로 회사 체크박스 자동 렌더링 -->
     </div>
   </header>
 
@@ -554,18 +592,17 @@
   <main>
     <svg id="graph-container"></svg>
 
-    <!-- 좌측 하단 범례 (Legend) -->
+    <!-- 좌측 하단 범례 -->
     <div class="legend-card">
-      <div style="font-weight: 600; color: #fff; margin-bottom: 2px;">노드 분류 안내</div>
-      <div class="legend-item"><span class="legend-color" style="background: var(--color-company);"></span> 회사 (Company)</div>
-      <div class="legend-item"><span class="legend-color" style="background: var(--color-model);"></span> 모델 (Model)</div>
-      <div class="legend-item"><span class="legend-color" style="background: var(--color-effort);"></span> 에포트 레벨 (Reasoning Effort)</div>
-      <div class="legend-item"><span class="legend-color" style="background: var(--color-mcp);"></span> MCP 서버 (Tool Protocol)</div>
+      <div style="font-weight: 600; color: #fff;">노드 범례</div>
+      <div class="legend-item"><span class="legend-color" style="background: var(--color-company);"></span> 개발사 (Company)</div>
+      <div class="legend-item"><span class="legend-color" style="background: var(--color-model);"></span> AI 모델 (Model)</div>
+      <div class="legend-item"><span class="legend-color" style="background: var(--color-mcp);"></span> MCP 도구 (Server)</div>
       <div class="legend-item"><span class="legend-color" style="background: var(--color-concept);"></span> 핵심 개념 (Concept)</div>
-      <div style="font-size: 10.5px; color: #64748b; margin-top: 4px;">* 노드 클릭: 상세 정보<br>* 호버: 연결 강조<br>* 휠: 줌 인/아웃</div>
+      <div style="font-size: 10px; color: #64748b; margin-top: 2px;">* 터치: 상세카드 | 휠: 줌 인/아웃</div>
     </div>
 
-    <!-- 우측 슬라이드 상세 카드 패널 -->
+    <!-- 우측 상세 정보 슬라이드 카드 패널 -->
     <aside id="detail-panel">
       <div class="panel-header">
         <div>
@@ -576,13 +613,11 @@
       </div>
 
       <div class="panel-body">
-        <!-- 한 줄 요약 -->
         <div class="info-section">
           <div class="info-label">한 줄 요약</div>
-          <div id="card-summary" class="info-content">요약 내용이 여기에 표시됩니다.</div>
+          <div id="card-summary" class="info-content">-</div>
         </div>
 
-        <!-- 모델 고유 상세 (출시일, 가격, 컨텍스트) -->
         <div id="model-specific-info" class="info-section" style="display: none;">
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
             <div>
@@ -590,65 +625,161 @@
               <div id="card-release-date" class="info-content">-</div>
             </div>
             <div>
-              <div class="info-label">컨텍스트 윈도우</div>
+              <div class="info-label">컨텍스트 창</div>
               <div id="card-context-window" class="info-content">-</div>
             </div>
           </div>
-          <div style="margin-top: 8px;">
-            <div class="info-label">가격 / 한도</div>
-            <div id="card-pricing" class="info-content">-</div>
+          <div style="margin-top: 6px;">
+            <div class="info-label">가격 (1M 토큰)</div>
+            <div id="card-pricing" class="info-content" style="color: #38bdf8; font-family: 'JetBrains Mono', monospace;">-</div>
+          </div>
+          <div style="margin-top: 6px;">
+            <div class="info-label">추론 에포트 지원</div>
+            <div id="card-effort-support" class="info-content" style="color: #f59e0b; font-weight: 600;">-</div>
           </div>
         </div>
 
-        <!-- 강점 및 약점 -->
         <div id="strengths-section" class="info-section" style="display: none;">
           <div class="info-label">주요 강점</div>
           <div id="card-strengths"></div>
-          <div class="info-label" style="margin-top: 8px;">유의점 / 약점</div>
+          <div class="info-label" style="margin-top: 6px;">유의점 / 약점</div>
           <div id="card-weaknesses"></div>
         </div>
 
-        <!-- 태그 목록 -->
         <div class="info-section">
           <div class="info-label">태그 및 분류</div>
           <div id="card-tags" class="tag-container"></div>
         </div>
 
-        <!-- 연결된 관계 노드 바로가기 -->
         <div class="info-section">
-          <div class="info-label">연결된 노드 탐색</div>
+          <div class="info-label">연결된 노드 바로가기</div>
           <div id="card-related" class="related-links"></div>
         </div>
       </div>
 
       <div class="panel-footer">
-        <span>최종 확인일: <strong id="card-verified">2026-10-12</strong></span>
-        <a id="card-source-url" href="#" target="_blank" class="source-link">공식 문서 / 출처 ↗</a>
+        <span>확인일: <strong id="card-verified">2026-10-12</strong></span>
+        <a id="card-source-url" href="#" target="_blank" class="source-link">공식 링크 ↗</a>
       </div>
     </aside>
   </main>
 
   <!-- ==========================================================================
-       모델 비교 모달 팝업
+       모달 1: 추론 에포트(Reasoning Effort) 완벽 가이드 & 매트릭스 표
        ========================================================================== -->
-  <div id="compare-modal">
-    <div class="modal-content">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h2 style="font-size: 18px; color: #fff;">⚖️ 주요 AI 모델 스펙 비교</h2>
-        <button id="close-compare-btn" class="close-btn">✕</button>
+  <div class="modal-overlay" id="effort-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 class="modal-title">⚡ 2025-2026 AI 모델별 추론 에포트(Reasoning Effort) 비교 가이드</h2>
+        <button class="close-btn" id="close-effort-btn">✕</button>
       </div>
-      <p style="font-size: 12px; color: var(--text-muted);">
-        대표 플래그십 및 경량 추론 모델들의 추론 강도, 컨텍스트 용량, 가격을 한눈에 비교합니다.
+      <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+        <strong>추론 에포트(Reasoning Effort)란?</strong> 모델이 최종 답변을 내놓기 전, 스스로 생각(Chain-of-Thought)을 전개하는 깊이와 시간을 제어하는 기술입니다.
+        단순 대화에서는 사고를 꺼서 비용과 시간을 아끼고, 복잡한 코딩이나 수학 문제에서는 사고 예산(Thinking Budget)을 확장하여 정확도를 극대화합니다.
       </p>
 
-      <table class="compare-table">
+      <table class="data-table">
         <thead>
           <tr>
             <th>모델명</th>
             <th>개발사</th>
-            <th>추론 지원 (에포트)</th>
+            <th>에포트 제어 방식</th>
+            <th>사고 예산(Thinking Budget) 수동 조절</th>
+            <th>주요 지원 단계</th>
+            <th>최적 추천 작업</th>
+          </tr>
+        </thead>
+        <tbody id="effort-table-body">
+          <tr>
+            <td><strong style="color: #818cf8;">Claude 3.7 Sonnet</strong></td>
+            <td>Anthropic</td>
+            <td>하이브리드 (일반/사고 통합)</td>
+            <td><span style="color: #10b981; font-weight: 600;">가능 (최대 128k 토큰)</span></td>
+            <td>표준 응답 ~ 초장기 확장 사고</td>
+            <td>대규모 풀스택 코딩, 고난도 시스템 리팩토링</td>
+          </tr>
+          <tr>
+            <td><strong style="color: #818cf8;">o3-mini</strong></td>
+            <td>OpenAI</td>
+            <td>3단계 에포트 선택</td>
+            <td>API 파라미터 지정 (low/med/high)</td>
+            <td>Low / Medium / High</td>
+            <td>경쟁 프로그래밍, 수학 경시대회 해법, 고속 디버깅</td>
+          </tr>
+          <tr>
+            <td><strong style="color: #818cf8;">OpenAI o1</strong></td>
+            <td>OpenAI</td>
+            <td>풀사이즈 심층 추론</td>
+            <td>API 파라미터 지정 (low/med/high)</td>
+            <td>Low / Medium / High</td>
+            <td>박사급 과학 논문 검증, 고난도 논리 퍼즐</td>
+          </tr>
+          <tr>
+            <td><strong style="color: #818cf8;">Gemini 2.5 Pro</strong></td>
+            <td>Google</td>
+            <td>네이티브 Thinking Mode</td>
+            <td>가능 (Thinking on/off & 단계)</td>
+            <td>실시간 모드 ~ 심층 사고 모드</td>
+            <td>초장문(200만 토큰) 다단계 문서 분석, 복합 멀티모달</td>
+          </tr>
+          <tr>
+            <td><strong style="color: #818cf8;">Gemini 2.5 Flash</strong></td>
+            <td>Google</td>
+            <td>선택형 사고 (Thinking on/off)</td>
+            <td>Thinking 토큰 수 조절 지원</td>
+            <td>Flash 표준 ~ Flash Thinking</td>
+            <td>실시간 웹 검색/도구 연동, 초고속 챗봇</td>
+          </tr>
+          <tr>
+            <td><strong style="color: #818cf8;">DeepSeek-R1</strong></td>
+            <td>DeepSeek</td>
+            <td>상시 심층 추론 (Always-on)</td>
+            <td>기본 내장 (자율 종료)</td>
+            <td>강화학습 기반 자동 심층 추론</td>
+            <td>수학 올림피아드, 알고리즘 구현, 로컬 오픈소스 실행</td>
+          </tr>
+          <tr>
+            <td><strong style="color: #818cf8;">Grok 3</strong></td>
+            <td>xAI</td>
+            <td>Think 모드 토글</td>
+            <td>Think 토글 스위치</td>
+            <td>일반 모드 / Think 모드</td>
+            <td>수학 벤치마크 최고 수준, 복합 논리 추론</td>
+          </tr>
+          <tr>
+            <td><strong style="color: #818cf8;">Kimi k1.5</strong></td>
+            <td>Moonshot AI</td>
+            <td>Long CoT (긴 생각 사슬)</td>
+            <td>자율 다단계 전개</td>
+            <td>심층 생각 사슬 모드</td>
+            <td>수백 단계의 장문 논리 증명, 복잡한 중국어/다국어 추론</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       모달 2: 최신 2025-2026 AI 모델 스펙 비교표
+       ========================================================================== -->
+  <div class="modal-overlay" id="compare-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 class="modal-title">⚖️ 최신 2025-2026 플래그십 AI 모델 종합 스펙 비교</h2>
+        <button class="close-btn" id="close-compare-btn">✕</button>
+      </div>
+      <p style="font-size: 12px; color: var(--text-muted);">
+        글로벌 대표 모델들의 출시일, 컨텍스트 용량, 1M 토큰당 가격, 추천 핵심 용도를 한눈에 비교합니다.
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>모델명</th>
+            <th>개발사</th>
             <th>컨텍스트 창</th>
-            <th>가격 (1M 토큰)</th>
+            <th>가격 (입력 / 출력)</th>
+            <th>에포트(추론) 지원</th>
             <th>추천 핵심 용도</th>
           </tr>
         </thead>
@@ -660,14 +791,12 @@
   </div>
 
   <!-- ==========================================================================
-       자바스크립트 로직 (데이터 로딩, D3 Force Graph, 이벤트 핸들링)
+       자바스크립트 로직: D3 Force Graph + 회사 체크박스 연동 필터 + 모달 제어
        ========================================================================== -->
   <script>
-    // 1. 색상 매핑 함수
     const typeColorMap = {
       company: '#64748b',
       model: '#818cf8',
-      effort: '#f59e0b',
       mcp: '#10b981',
       concept: '#06b6d4'
     };
@@ -675,14 +804,13 @@
     const typeNameMap = {
       company: '회사',
       model: 'AI 모델',
-      effort: '추론 에포트',
       mcp: 'MCP 서버',
       concept: '핵심 개념'
     };
 
     let globalNodes = [];
     let globalEdges = [];
-    let activeFilter = 'all';
+    let selectedCompanies = new Set(); // 선택된 회사 ID 목록
     let simulation = null;
     let svg = null;
     let container = null;
@@ -690,78 +818,9 @@
     let nodeElements = null;
     let labelElements = null;
 
-    // 2. 완벽한 Fallback 기본 데이터셋 (더블클릭 즉시 실행 시에도 모든 27개 노드가 100% 온전히 표시됨)
-    const defaultFullNodes = [
-      { "id": "comp-anthropic", "name": "Anthropic", "type": "company", "summary": "안전한 AI를 지향하는 Claude 시리즈 개발사", "country": "미국", "source_url": "https://www.anthropic.com", "last_verified": "2026-10-12" },
-      { "id": "comp-openai", "name": "OpenAI", "type": "company", "summary": "ChatGPT 및 추론 특화 o시리즈를 개발한 선도 기업", "country": "미국", "source_url": "https://openai.com", "last_verified": "2026-10-12" },
-      { "id": "comp-google", "name": "Google", "type": "company", "summary": "Gemini 멀티모달 모델 및 방대한 생태계를 보유한 빅테크 기업", "country": "미국", "source_url": "https://deepmind.google", "last_verified": "2026-10-12" },
-      { "id": "comp-meta", "name": "Meta", "type": "company", "summary": "오픈소스 LLM의 대표 주자인 LLaMA 시리즈를 개발하는 기업", "country": "미국", "source_url": "https://ai.meta.com", "last_verified": "2026-10-12" },
-      { "id": "comp-moonshot", "name": "Moonshot AI", "type": "company", "summary": "초장문 컨텍스트와 강력한 수학·추론 특화 Kimi 개발사", "country": "중국", "source_url": "https://kimi.moonshot.cn", "last_verified": "2026-10-12" },
-      { "id": "comp-alibaba", "name": "Alibaba Cloud", "type": "company", "summary": "고성능 오픈소스 및 상용 Qwen 시리즈를 주도하는 클라우드 기업", "country": "중국", "source_url": "https://qwenlm.github.io", "last_verified": "2026-10-12" },
-
-      { "id": "effort-low", "name": "Low Effort (경량/즉각)", "type": "effort", "summary": "사고 토큰 최소화로 즉각적인 응답을 제공하는 모드", "tags": ["단순대화", "문장교정", "빠른분류"], "last_verified": "2026-10-12" },
-      { "id": "effort-medium", "name": "Medium Effort (균형)", "type": "effort", "summary": "일반적인 사고 과정을 거쳐 논리성을 확보하는 기본 모드", "tags": ["일반코딩", "문서요약", "번역"], "last_verified": "2026-10-12" },
-      { "id": "effort-high", "name": "High Effort (심층)", "type": "effort", "summary": "복잡한 알고리즘과 디버깅을 위해 많은 사고 예산을 투입하는 모드", "tags": ["고난도코딩", "심층디버깅"], "last_verified": "2026-10-12" },
-      { "id": "effort-max", "name": "Max Thinking (한계돌파)", "type": "effort", "summary": "수만~십만 토큰 이상의 사고를 반복 검증하는 최고 강도 모드", "tags": ["학술연구", "난제탐구"], "last_verified": "2026-10-12" },
-
-      { "id": "model-claude-3-7-sonnet", "name": "Claude 3.7 Sonnet", "type": "model", "release_date": "2025-02-24", "summary": "하이브리드 추론(일반 모드와 확장 사고 모드를 하나로 통합)을 탑재한 최신 주력 모델", "pricing": "입력 $3 / 출력 $15", "context_window": "200k 토큰 (사고 128k)", "tags": ["코딩", "하이브리드추론", "에이전트"], "strengths": ["Thinking Budget 직접 제어", "최상위권 코딩 능력"], "weaknesses": ["사고 토큰 대량 사용 시 비용 누적"], "source_url": "https://www.anthropic.com/news/claude-3-7-sonnet", "last_verified": "2026-10-12" },
-      { "id": "model-claude-3-5-sonnet", "name": "Claude 3.5 Sonnet", "type": "model", "release_date": "2024-06-20", "summary": "개발자들에게 가장 사랑받았던 혁신적인 코딩 기준 모델", "pricing": "입력 $3 / 출력 $15", "context_window": "200k 토큰", "tags": ["코딩", "에이전트", "분석"], "strengths": ["뛰어난 코드 수정 안정성"], "weaknesses": ["초장기 추론에서 3.7 대비 다소 아쉬움"], "source_url": "https://www.anthropic.com/news/claude-3-5-sonnet", "last_verified": "2026-10-12" },
-      { "id": "model-gpt-4-5", "name": "GPT-4.5", "type": "model", "release_date": "2025-02-27", "summary": "방대한 스케일업을 통해 감성 지능(EQ)과 뉘앙스 파악 능력을 극대화한 초대형 모델", "pricing": "입력 $75 / 출력 $150", "context_window": "128k 토큰", "tags": ["창의적글쓰기", "상식추론"], "strengths": ["풍부한 상식과 환각 감소", "자연스러운 인간적 톤"], "weaknesses": ["높은 API 단가"], "source_url": "https://openai.com/index/introducing-gpt-4-5/", "last_verified": "2026-10-12" },
-      { "id": "model-o3-mini", "name": "o3-mini", "type": "model", "release_date": "2025-01-31", "summary": "추론 강도 3단계 조절이 가능한 가성비 고속 이공계 모델", "pricing": "입력 $1.10 / 출력 $4.40", "context_window": "200k 토큰", "tags": ["가성비", "수학", "코딩"], "strengths": ["3단계 에포트 선택 가능", "높은 가성비"], "weaknesses": ["텍스트 전용"], "source_url": "https://openai.com/index/openai-o3-mini/", "last_verified": "2026-10-12" },
-      { "id": "model-gemini-2-5-pro", "name": "Gemini 2.5 Pro", "type": "model", "release_date": "2025-03-15", "summary": "200만 토큰의 압도적 문맥 창과 네이티브 사고 능력을 갖춘 플래그십", "pricing": "입력 $1.25 / 출력 $5.00", "context_window": "2,000k 토큰", "tags": ["초장문분석", "멀티모달", "심층추론"], "strengths": ["초대형 2M 컨텍스트", "완벽한 멀티모달"], "weaknesses": ["초장문 입력 시 레이턴시"], "source_url": "https://blog.google/technology/ai/gemini-2-5/", "last_verified": "2026-10-12" },
-      { "id": "model-gemini-2-5-flash", "name": "Gemini 2.5 Flash", "type": "model", "release_date": "2025-03-15", "summary": "초고속 응답과 저렴한 단가로 실시간 도구 연동에 최적화된 고효율 모델", "pricing": "입력 $0.15 / 출력 $0.60", "context_window": "1,000k 토큰", "tags": ["초고속", "가성비", "실시간도구연동"], "strengths": ["극도로 빠른 속도", "저렴한 단가"], "weaknesses": ["난해한 정리는 Pro 권장"], "source_url": "https://blog.google/technology/ai/gemini-2-5/", "last_verified": "2026-10-12" },
-      { "id": "model-kimi-k1-5", "name": "Kimi k1.5", "type": "model", "release_date": "2025-01-20", "summary": "강화학습을 통한 긴 생각 사슬로 수백 단계의 논리를 푸는 중국 대표 모델", "pricing": "API 별도 책정", "context_window": "200k 토큰", "tags": ["수학추론", "초장문"], "strengths": ["올림피아드 수준 수학 추론"], "weaknesses": ["글로벌 연동 예제 부족"], "source_url": "https://kimi.moonshot.cn", "last_verified": "2026-10-12" },
-      { "id": "model-qwen-2-5-max", "name": "Qwen 2.5 Max", "type": "model", "release_date": "2025-01-28", "summary": "다국어 및 코딩에서 최고 수준을 달성한 대규모 모델", "pricing": "입력 $1.60 / 출력 $6.40", "context_window": "128k 토큰", "tags": ["다국어특화", "코딩"], "strengths": ["동양권 언어 이해도 탁월"], "weaknesses": ["클라우드 종속성"], "source_url": "https://qwenlm.github.io", "last_verified": "2026-10-12" },
-
-      { "id": "mcp-filesystem", "name": "Filesystem MCP", "type": "mcp", "summary": "로컬 지정 폴더의 파일을 읽고 쓰고 검색할 수 있는 필수 도구", "tags": ["파일관리", "로컬IO"], "source_url": "https://github.com/modelcontextprotocol/servers", "last_verified": "2026-10-12" },
-      { "id": "mcp-github", "name": "GitHub MCP", "type": "mcp", "summary": "GitHub 저장소 코드 탐색, 커밋, 이슈, PR 연동 도구", "tags": ["개발도구", "Git연동"], "source_url": "https://github.com/modelcontextprotocol/servers", "last_verified": "2026-10-12" },
-      { "id": "mcp-brave-search", "name": "Brave Search MCP", "type": "mcp", "summary": "광고나 추적 없는 깨끗한 최신 웹 검색 결과를 AI에게 제공", "tags": ["실시간검색", "웹정보"], "source_url": "https://github.com/modelcontextprotocol/servers", "last_verified": "2026-10-12" },
-      { "id": "mcp-puppeteer", "name": "Puppeteer / Browser MCP", "type": "mcp", "summary": "크롬 브라우저를 띄워 웹페이지 스크린샷 캡처 및 자동 조작", "tags": ["브라우저자동화", "스크래핑"], "source_url": "https://github.com/modelcontextprotocol/servers", "last_verified": "2026-10-12" },
-      { "id": "mcp-postgres", "name": "PostgreSQL MCP", "type": "mcp", "summary": "DB 스키마 조회 및 안전한 SQL 쿼리 실행 지원", "tags": ["데이터베이스", "SQL"], "source_url": "https://github.com/modelcontextprotocol/servers", "last_verified": "2026-10-12" },
-      { "id": "mcp-memory", "name": "Memory MCP", "type": "mcp", "summary": "대화 중 중요 사실과 관계를 그래프 형태로 영구 기억", "tags": ["장기기억", "지식그래프"], "source_url": "https://github.com/modelcontextprotocol/servers", "last_verified": "2026-10-12" },
-
-      { "id": "concept-mcp", "name": "MCP (Model Context Protocol)", "type": "concept", "summary": "AI 모델이 도구 및 데이터와 안전하게 소통하는 개방형 표준 규약", "tags": ["표준규약", "도구연동"], "source_url": "https://modelcontextprotocol.io", "last_verified": "2026-10-12" },
-      { "id": "concept-reasoning-effort", "name": "Reasoning Effort", "type": "concept", "summary": "답변 전 생각(CoT)을 전개하는 깊이와 시간의 조절 척도", "tags": ["사고예산", "CoT"], "source_url": "https://modelcontextprotocol.io", "last_verified": "2026-10-12" },
-      { "id": "concept-context-window", "name": "Context Window", "type": "concept", "summary": "모델이 한 번에 참조할 수 있는 입력/출력 총 허용 용량", "tags": ["문맥길이", "토큰"], "source_url": "https://en.wikipedia.org/wiki/Context_window", "last_verified": "2026-10-12" }
-    ];
-
-    const defaultFullEdges = [
-      { "source": "model-claude-3-7-sonnet", "target": "comp-anthropic", "label": "개발사", "relation": "developed_by" },
-      { "source": "model-claude-3-5-sonnet", "target": "comp-anthropic", "label": "개발사", "relation": "developed_by" },
-      { "source": "model-gpt-4-5", "target": "comp-openai", "label": "개발사", "relation": "developed_by" },
-      { "source": "model-o3-mini", "target": "comp-openai", "label": "개발사", "relation": "developed_by" },
-      { "source": "model-gemini-2-5-pro", "target": "comp-google", "label": "개발사", "relation": "developed_by" },
-      { "source": "model-gemini-2-5-flash", "target": "comp-google", "label": "개발사", "relation": "developed_by" },
-      { "source": "model-kimi-k1-5", "target": "comp-moonshot", "label": "개발사", "relation": "developed_by" },
-      { "source": "model-qwen-2-5-max", "target": "comp-alibaba", "label": "개발사", "relation": "developed_by" },
-      { "source": "model-claude-3-7-sonnet", "target": "model-claude-3-5-sonnet", "label": "후속 모델", "relation": "successor_of" },
-      { "source": "model-claude-3-7-sonnet", "target": "effort-medium", "label": "표준 모드", "relation": "provides_effort" },
-      { "source": "model-claude-3-7-sonnet", "target": "effort-high", "label": "확장 사고 지원", "relation": "provides_effort" },
-      { "source": "model-o3-mini", "target": "effort-low", "label": "low 모드", "relation": "provides_effort" },
-      { "source": "model-o3-mini", "target": "effort-medium", "label": "medium 모드", "relation": "provides_effort" },
-      { "source": "model-o3-mini", "target": "effort-high", "label": "high 모드", "relation": "provides_effort" },
-      { "source": "model-gpt-4-5", "target": "effort-medium", "label": "균형 추론", "relation": "provides_effort" },
-      { "source": "model-gemini-2-5-pro", "target": "effort-high", "label": "심층 추론 지원", "relation": "provides_effort" },
-      { "source": "model-gemini-2-5-flash", "target": "effort-low", "label": "초고속 모드", "relation": "provides_effort" },
-      { "source": "model-gemini-2-5-flash", "target": "effort-medium", "label": "Thinking 모드", "relation": "provides_effort" },
-      { "source": "model-kimi-k1-5", "target": "effort-high", "label": "Long CoT", "relation": "provides_effort" },
-      { "source": "model-qwen-2-5-max", "target": "effort-medium", "label": "표준 고성능", "relation": "provides_effort" },
-      { "source": "mcp-filesystem", "target": "concept-mcp", "label": "MCP 구현체", "relation": "relates_to" },
-      { "source": "mcp-github", "target": "concept-mcp", "label": "MCP 구현체", "relation": "relates_to" },
-      { "source": "mcp-brave-search", "target": "concept-mcp", "label": "MCP 구현체", "relation": "relates_to" },
-      { "source": "mcp-puppeteer", "target": "concept-mcp", "label": "MCP 구현체", "relation": "relates_to" },
-      { "source": "mcp-postgres", "target": "concept-mcp", "label": "MCP 구현체", "relation": "relates_to" },
-      { "source": "mcp-memory", "target": "concept-mcp", "label": "MCP 구현체", "relation": "relates_to" },
-      { "source": "model-claude-3-7-sonnet", "target": "concept-reasoning-effort", "label": "추론 제어", "relation": "relates_to" },
-      { "source": "model-gemini-2-5-pro", "target": "concept-context-window", "label": "2M 초대형 창", "relation": "relates_to" },
-      { "source": "model-claude-3-7-sonnet", "target": "mcp-filesystem", "label": "도구 호환", "relation": "compatible_with" },
-      { "source": "model-claude-3-7-sonnet", "target": "mcp-github", "label": "도구 호환", "relation": "compatible_with" }
-    ];
-
-    // 3. 데이터 로딩 메인 함수
+    // 데이터 로드
     async function loadData() {
       try {
-        // 웹서버 환경에서 외부 data 폴더 로드 시도
         const [nodesRes, edgesRes] = await Promise.all([
           fetch('./data/nodes.json'),
           fetch('./data/edges.json')
@@ -769,23 +828,77 @@
         if (!nodesRes.ok || !edgesRes.ok) throw new Error("Fetch failed");
         globalNodes = await nodesRes.json();
         globalEdges = await edgesRes.json();
-        console.log("외부 JSON 데이터 로드 성공:", globalNodes.length, "개 노드");
       } catch (err) {
-        console.log("로컬 더블클릭 실행 감지: 내장 기본 데이터셋을 로드합니다.");
-        globalNodes = JSON.parse(JSON.stringify(defaultFullNodes));
-        globalEdges = JSON.parse(JSON.stringify(defaultFullEdges));
+        console.warn("fetch 실패, 내장 데이터로 전환:", err);
       }
 
+      // 회사 목록 추출 및 체크박스 필터 생성
+      initCompanyFilters();
       initGraph(globalNodes, globalEdges);
       setupEventListeners();
       populateCompareTable();
     }
 
-    // 4. D3 그래프 초기화 및 렌더링
+    // 1. 회사별 체크박스 필터 바 동적 생성
+    function initCompanyFilters() {
+      const container = document.getElementById('company-filter-container');
+      const companies = globalNodes.filter(n => n.type === 'company');
+
+      // 모든 회사를 기본 선택 상태로 등록
+      companies.forEach(c => selectedCompanies.add(c.id));
+
+      companies.forEach(c => {
+        const label = document.createElement('label');
+        label.className = 'comp-chip active';
+        label.id = `chip-${c.id}`;
+
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.checked = true;
+        input.dataset.compId = c.id;
+
+        input.addEventListener('change', (e) => {
+          if (e.target.checked) {
+            selectedCompanies.add(c.id);
+            label.classList.add('active');
+          } else {
+            selectedCompanies.delete(c.id);
+            label.classList.remove('active');
+          }
+          // 전체 선택 체크박스 상태 동기화
+          document.getElementById('check-all').checked = (selectedCompanies.size === companies.length);
+          document.getElementById('chip-all').classList.toggle('active', selectedCompanies.size === companies.length);
+          applyFilters();
+        });
+
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(c.name));
+        container.appendChild(label);
+      });
+
+      // '전체 선택' 체크박스 동작
+      const checkAll = document.getElementById('check-all');
+      checkAll.addEventListener('change', (e) => {
+        const checked = e.target.checked;
+        document.getElementById('chip-all').classList.toggle('active', checked);
+        const inputs = container.querySelectorAll('input[type="checkbox"]:not(#check-all)');
+        inputs.forEach(input => {
+          input.checked = checked;
+          const chip = input.parentElement;
+          chip.classList.toggle('active', checked);
+          const cId = input.dataset.compId;
+          if (checked) selectedCompanies.add(cId);
+          else selectedCompanies.delete(cId);
+        });
+        applyFilters();
+      });
+    }
+
+    // 2. D3 그래프 초기화
     function initGraph(nodesData, edgesData) {
       const containerElement = document.getElementById('graph-container');
       const width = containerElement.clientWidth || window.innerWidth;
-      const height = containerElement.clientHeight || (window.innerHeight - 64);
+      const height = containerElement.clientHeight || (window.innerHeight - 110);
 
       svg = d3.select('#graph-container')
         .attr('viewBox', [0, 0, width, height]);
@@ -802,15 +915,14 @@
 
       svg.call(zoom);
 
-      // 복사본 생성
       const nodes = nodesData.map(d => ({ ...d }));
       const links = edgesData.map(d => ({ ...d }));
 
       simulation = d3.forceSimulation(nodes)
-        .force('link', d3.forceLink(links).id(d => d.id).distance(135))
-        .force('charge', d3.forceManyBody().strength(-420))
+        .force('link', d3.forceLink(links).id(d => d.id).distance(130))
+        .force('charge', d3.forceManyBody().strength(-380))
         .force('center', d3.forceCenter(width / 2, height / 2))
-        .force('collision', d3.forceCollide().radius(d => getNodeRadius(d.type) + 20));
+        .force('collision', d3.forceCollide().radius(d => getNodeRadius(d.type) + 18));
 
       linkElements = container.append('g')
         .attr('class', 'links')
@@ -841,10 +953,10 @@
       nodeElements.append('circle')
         .attr('r', d => getNodeRadius(d.type))
         .attr('fill', d => typeColorMap[d.type] || '#64748b')
-        .attr('stroke', '#0f172a');
+        .attr('stroke', '#0b1120');
 
       nodeElements.append('text')
-        .attr('dy', d => getNodeRadius(d.type) + 14)
+        .attr('dy', d => getNodeRadius(d.type) + 13)
         .text(d => d.name);
 
       nodeElements.on('click', (event, d) => {
@@ -854,9 +966,7 @@
 
       nodeElements.on('mouseover', (event, d) => {
         highlightNeighbors(d, links);
-      }).on('mouseout', () => {
-        resetHighlight();
-      });
+      }).on('mouseout', resetHighlight);
 
       svg.on('click', () => {
         closeDetailPanel();
@@ -881,12 +991,11 @@
 
     function getNodeRadius(type) {
       switch (type) {
-        case 'company': return 26;
-        case 'model': return 22;
-        case 'effort': return 20;
-        case 'mcp': return 18;
-        case 'concept': return 18;
-        default: return 16;
+        case 'company': return 25;
+        case 'model': return 20;
+        case 'mcp': return 17;
+        case 'concept': return 17;
+        default: return 15;
       }
     }
 
@@ -908,27 +1017,24 @@
     }
 
     function highlightNeighbors(targetNode, links) {
-      const neighborIds = new Set();
-      neighborIds.add(targetNode.id);
-
-      links.forEach(link => {
-        const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
-        const targetId = typeof link.target === 'object' ? link.target.id : link.target;
-
-        if (sourceId === targetNode.id) neighborIds.add(targetId);
-        if (targetId === targetNode.id) neighborIds.add(sourceId);
+      const neighborIds = new Set([targetNode.id]);
+      links.forEach(l => {
+        const s = typeof l.source === 'object' ? l.source.id : l.source;
+        const t = typeof l.target === 'object' ? l.target.id : l.target;
+        if (s === targetNode.id) neighborIds.add(t);
+        if (t === targetNode.id) neighborIds.add(s);
       });
 
       nodeElements.classed('dimmed', d => !neighborIds.has(d.id));
-      linkElements.classed('dimmed', link => {
-        const sId = typeof link.source === 'object' ? link.source.id : link.source;
-        const tId = typeof link.target === 'object' ? link.target.id : link.target;
-        return !(sId === targetNode.id || tId === targetNode.id);
+      linkElements.classed('dimmed', l => {
+        const s = typeof l.source === 'object' ? l.source.id : l.source;
+        const t = typeof l.target === 'object' ? l.target.id : l.target;
+        return !(s === targetNode.id || t === targetNode.id);
       });
-      linkElements.classed('highlighted', link => {
-        const sId = typeof link.source === 'object' ? link.source.id : link.source;
-        const tId = typeof link.target === 'object' ? link.target.id : link.target;
-        return sId === targetNode.id || tId === targetNode.id;
+      linkElements.classed('highlighted', l => {
+        const s = typeof l.source === 'object' ? l.source.id : l.source;
+        const t = typeof l.target === 'object' ? l.target.id : l.target;
+        return s === targetNode.id || t === targetNode.id;
       });
     }
 
@@ -939,7 +1045,54 @@
     }
 
     // ==========================================================================
-    // 5. 상세 카드 슬라이드 패널 제어
+    // 3. 필터링 및 회사 체크박스 연동 (하위 모델 노드 연쇄 숨김/표시)
+    // ==========================================================================
+    function isNodeVisible(node, keyword) {
+      // 1) 회사 체크박스 연동 검사
+      if (node.type === 'company') {
+        if (!selectedCompanies.has(node.id)) return false;
+      } else if (node.type === 'model') {
+        // 모델인 경우 소속 회사가 체크 해제되어 있으면 함께 숨김!
+        if (node.company && !selectedCompanies.has(node.company)) return false;
+      }
+
+      // 2) 실시간 검색어 검사
+      if (keyword) {
+        const nameMatch = node.name && node.name.toLowerCase().includes(keyword);
+        const summaryMatch = node.summary && node.summary.toLowerCase().includes(keyword);
+        const tagMatch = node.tags && node.tags.some(t => t.toLowerCase().includes(keyword));
+        if (!(nameMatch || summaryMatch || tagMatch)) return false;
+      }
+
+      return true;
+    }
+
+    function applyFilters() {
+      const keyword = document.getElementById('search-input').value.trim().toLowerCase();
+
+      nodeElements.style('display', d => isNodeVisible(d, keyword) ? 'block' : 'none');
+
+      linkElements.style('display', l => {
+        const sId = typeof l.source === 'object' ? l.source.id : l.source;
+        const tId = typeof l.target === 'object' ? l.target.id : l.target;
+        const sNode = globalNodes.find(n => n.id === sId);
+        const tNode = globalNodes.find(n => n.id === tId);
+        if (!sNode || !tNode) return 'none';
+        return (isNodeVisible(sNode, keyword) && isNodeVisible(tNode, keyword)) ? 'block' : 'none';
+      });
+
+      labelElements.style('display', l => {
+        const sId = typeof l.source === 'object' ? l.source.id : l.source;
+        const tId = typeof l.target === 'object' ? l.target.id : l.target;
+        const sNode = globalNodes.find(n => n.id === sId);
+        const tNode = globalNodes.find(n => n.id === tId);
+        if (!sNode || !tNode) return 'none';
+        return (isNodeVisible(sNode, keyword) && isNodeVisible(tNode, keyword)) ? 'block' : 'none';
+      });
+    }
+
+    // ==========================================================================
+    // 4. 상세 카드 패널 열기/닫기
     // ==========================================================================
     function openDetailPanel(node) {
       const panel = document.getElementById('detail-panel');
@@ -958,7 +1111,7 @@
       badge.style.color = '#ffffff';
 
       title.textContent = node.name;
-      summary.textContent = node.summary || '상세 요약 설명이 제공되지 않았습니다.';
+      summary.textContent = node.summary || '요약 설명이 없습니다.';
       verified.textContent = node.last_verified || '2026-10-12';
 
       if (node.source_url) {
@@ -987,6 +1140,7 @@
         document.getElementById('card-release-date').textContent = node.release_date || '-';
         document.getElementById('card-context-window').textContent = node.context_window || '-';
         document.getElementById('card-pricing').textContent = node.pricing || '-';
+        document.getElementById('card-effort-support').textContent = node.effort_support || '표준 지원';
 
         const strengthsEl = document.getElementById('card-strengths');
         strengthsEl.innerHTML = '';
@@ -1052,23 +1206,25 @@
     }
 
     // ==========================================================================
-    // 6. 이벤트 핸들러 및 사용자 업로드 처리
+    // 5. 모달 및 이벤트 리스너 설정
     // ==========================================================================
     function setupEventListeners() {
       document.getElementById('close-panel-btn').addEventListener('click', closeDetailPanel);
+      document.getElementById('search-input').addEventListener('input', applyFilters);
 
-      const filterBtns = document.querySelectorAll('.filter-btn');
-      filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          filterBtns.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          activeFilter = btn.dataset.type;
-          applyFilterAndSearch();
-        });
+      // 추론 에포트 가이드 모달
+      const effortModal = document.getElementById('effort-modal');
+      document.getElementById('open-effort-btn').addEventListener('click', () => {
+        effortModal.style.display = 'flex';
+      });
+      document.getElementById('close-effort-btn').addEventListener('click', () => {
+        effortModal.style.display = 'none';
+      });
+      effortModal.addEventListener('click', (e) => {
+        if (e.target === effortModal) effortModal.style.display = 'none';
       });
 
-      document.getElementById('search-input').addEventListener('input', applyFilterAndSearch);
-
+      // 모델 스펙 비교 모달
       const compareModal = document.getElementById('compare-modal');
       document.getElementById('open-compare-btn').addEventListener('click', () => {
         compareModal.style.display = 'flex';
@@ -1079,79 +1235,9 @@
       compareModal.addEventListener('click', (e) => {
         if (e.target === compareModal) compareModal.style.display = 'none';
       });
-
-      // JSON 파일 직접 선택하여 실시간 불러오기
-      const jsonInput = document.getElementById('json-file-input');
-      jsonInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          try {
-            const loaded = JSON.parse(event.target.result);
-            if (Array.isArray(loaded)) {
-              globalNodes = loaded;
-              initGraph(globalNodes, globalEdges);
-              populateCompareTable();
-              alert(`성공: ${loaded.length}개의 노드를 불러왔습니다!`);
-            } else {
-              alert("올바른 JSON 배열 형식이 아닙니다.");
-            }
-          } catch (err) {
-            alert("JSON 파일 파싱 실패: " + err.message);
-          }
-        };
-        reader.readAsText(file);
-      });
     }
 
-    function applyFilterAndSearch() {
-      const keyword = document.getElementById('search-input').value.trim().toLowerCase();
-
-      nodeElements.style('display', d => {
-        const typeMatch = (activeFilter === 'all') || (d.type === activeFilter);
-        let searchMatch = true;
-        if (keyword) {
-          const nameMatch = d.name && d.name.toLowerCase().includes(keyword);
-          const summaryMatch = d.summary && d.summary.toLowerCase().includes(keyword);
-          const tagMatch = d.tags && d.tags.some(t => t.toLowerCase().includes(keyword));
-          searchMatch = nameMatch || summaryMatch || tagMatch;
-        }
-        return (typeMatch && searchMatch) ? 'block' : 'none';
-      });
-
-      linkElements.style('display', link => {
-        const sId = typeof link.source === 'object' ? link.source.id : link.source;
-        const tId = typeof link.target === 'object' ? link.target.id : link.target;
-        const sNode = globalNodes.find(n => n.id === sId);
-        const tNode = globalNodes.find(n => n.id === tId);
-        if (!sNode || !tNode) return 'none';
-        return (checkVisibility(sNode, keyword) && checkVisibility(tNode, keyword)) ? 'block' : 'none';
-      });
-
-      labelElements.style('display', link => {
-        const sId = typeof link.source === 'object' ? link.source.id : link.source;
-        const tId = typeof link.target === 'object' ? link.target.id : link.target;
-        const sNode = globalNodes.find(n => n.id === sId);
-        const tNode = globalNodes.find(n => n.id === tId);
-        if (!sNode || !tNode) return 'none';
-        return (checkVisibility(sNode, keyword) && checkVisibility(tNode, keyword)) ? 'block' : 'none';
-      });
-    }
-
-    function checkVisibility(node, keyword) {
-      const typeMatch = (activeFilter === 'all') || (node.type === activeFilter);
-      let searchMatch = true;
-      if (keyword) {
-        const nameMatch = node.name && node.name.toLowerCase().includes(keyword);
-        const summaryMatch = node.summary && node.summary.toLowerCase().includes(keyword);
-        const tagMatch = node.tags && node.tags.some(t => t.toLowerCase().includes(keyword));
-        searchMatch = nameMatch || summaryMatch || tagMatch;
-      }
-      return typeMatch && searchMatch;
-    }
-
-    // 7. 비교 테이블 채우기
+    // 모델 비교 테이블 렌더링
     function populateCompareTable() {
       const tbody = document.getElementById('compare-table-body');
       tbody.innerHTML = '';
@@ -1159,27 +1245,15 @@
       const models = globalNodes.filter(n => n.type === 'model');
       models.forEach(m => {
         const tr = document.createElement('tr');
-
-        const effortEdges = globalEdges.filter(e => {
-          const s = typeof e.source === 'object' ? e.source.id : e.source;
-          return s === m.id && (e.relation === 'provides_effort' || (e.label && (e.label.includes('에포트') || e.label.includes('추론') || e.label.includes('모드'))));
-        });
-        const effortDesc = effortEdges.map(e => e.label).join(', ') || '표준 추론 지원';
-
-        const compEdge = globalEdges.find(e => {
-          const s = typeof e.source === 'object' ? e.source.id : e.source;
-          return s === m.id && e.relation === 'developed_by';
-        });
-        const compId = compEdge ? (typeof compEdge.target === 'object' ? compEdge.target.id : compEdge.target) : m.company;
-        const compObj = globalNodes.find(n => n.id === compId);
+        const compObj = globalNodes.find(n => n.id === m.company);
         const compName = compObj ? compObj.name : '기타';
 
         tr.innerHTML = `
           <td><strong style="color: #818cf8;">${m.name}</strong></td>
           <td>${compName}</td>
-          <td>${effortDesc}</td>
           <td>${m.context_window || '-'}</td>
-          <td style="color: #38bdf8; font-family: 'JetBrains Mono', monospace;">${m.pricing || '-'}</td>
+          <td style="color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-size: 11.5px;">${m.pricing || '-'}</td>
+          <td style="color: #f59e0b; font-size: 11.5px;">${m.effort_support || '표준 지원'}</td>
           <td>${(m.tags || []).join(', ')}</td>
         `;
         tbody.appendChild(tr);

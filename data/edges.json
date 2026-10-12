@@ -1,192 +1,49 @@
 [
-  {
-    "source": "model-claude-3-7-sonnet",
-    "target": "comp-anthropic",
-    "relation": "developed_by",
-    "label": "개발사"
-  },
-  {
-    "source": "model-claude-3-5-sonnet",
-    "target": "comp-anthropic",
-    "relation": "developed_by",
-    "label": "개발사"
-  },
-  {
-    "source": "model-gpt-4-5",
-    "target": "comp-openai",
-    "relation": "developed_by",
-    "label": "개발사"
-  },
-  {
-    "source": "model-o3-mini",
-    "target": "comp-openai",
-    "relation": "developed_by",
-    "label": "개발사"
-  },
-  {
-    "source": "model-gemini-2-5-pro",
-    "target": "comp-google",
-    "relation": "developed_by",
-    "label": "개발사"
-  },
-  {
-    "source": "model-gemini-2-5-flash",
-    "target": "comp-google",
-    "relation": "developed_by",
-    "label": "개발사"
-  },
-  {
-    "source": "model-kimi-k1-5",
-    "target": "comp-moonshot",
-    "relation": "developed_by",
-    "label": "개발사"
-  },
-  {
-    "source": "model-qwen-2-5-max",
-    "target": "comp-alibaba",
-    "relation": "developed_by",
-    "label": "개발사"
-  },
+  { "source": "model-claude-3-7-sonnet", "target": "comp-anthropic", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-claude-3-5-sonnet", "target": "comp-anthropic", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-claude-3-5-haiku", "target": "comp-anthropic", "relation": "developed_by", "label": "개발사" },
 
-  {
-    "source": "model-claude-3-7-sonnet",
-    "target": "model-claude-3-5-sonnet",
-    "relation": "successor_of",
-    "label": "후속 모델"
-  },
+  { "source": "model-gpt-4-5", "target": "comp-openai", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-o3-mini", "target": "comp-openai", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-o1", "target": "comp-openai", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-gpt-4o", "target": "comp-openai", "relation": "developed_by", "label": "개발사" },
 
-  {
-    "source": "model-claude-3-7-sonnet",
-    "target": "effort-medium",
-    "relation": "provides_effort",
-    "label": "표준 모드 지원"
-  },
-  {
-    "source": "model-claude-3-7-sonnet",
-    "target": "effort-high",
-    "relation": "provides_effort",
-    "label": "확장 사고 지원 (최대 128k)"
-  },
-  {
-    "source": "model-o3-mini",
-    "target": "effort-low",
-    "relation": "provides_effort",
-    "label": "low effort 지원"
-  },
-  {
-    "source": "model-o3-mini",
-    "target": "effort-medium",
-    "relation": "provides_effort",
-    "label": "medium effort 지원"
-  },
-  {
-    "source": "model-o3-mini",
-    "target": "effort-high",
-    "relation": "provides_effort",
-    "label": "high effort 지원"
-  },
-  {
-    "source": "model-gpt-4-5",
-    "target": "effort-medium",
-    "relation": "provides_effort",
-    "label": "단일 균형 추론"
-  },
-  {
-    "source": "model-gemini-2-5-pro",
-    "target": "effort-high",
-    "relation": "provides_effort",
-    "label": "심층 네이티브 추론 지원"
-  },
-  {
-    "source": "model-gemini-2-5-flash",
-    "target": "effort-low",
-    "relation": "provides_effort",
-    "label": "초고속 실시간 모드"
-  },
-  {
-    "source": "model-gemini-2-5-flash",
-    "target": "effort-medium",
-    "relation": "provides_effort",
-    "label": "Flash Thinking 모드"
-  },
-  {
-    "source": "model-kimi-k1-5",
-    "target": "effort-high",
-    "relation": "provides_effort",
-    "label": "Long CoT 심층 추론"
-  },
-  {
-    "source": "model-qwen-2-5-max",
-    "target": "effort-medium",
-    "relation": "provides_effort",
-    "label": "고성능 일반 추론"
-  },
+  { "source": "model-gemini-2-5-pro", "target": "comp-google", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-gemini-2-5-flash", "target": "comp-google", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-gemini-2-0-flash", "target": "comp-google", "relation": "developed_by", "label": "개발사" },
 
-  {
-    "source": "mcp-filesystem",
-    "target": "concept-mcp",
-    "relation": "relates_to",
-    "label": "MCP 구현체"
-  },
-  {
-    "source": "mcp-github",
-    "target": "concept-mcp",
-    "relation": "relates_to",
-    "label": "MCP 구현체"
-  },
-  {
-    "source": "mcp-brave-search",
-    "target": "concept-mcp",
-    "relation": "relates_to",
-    "label": "MCP 구현체"
-  },
-  {
-    "source": "mcp-puppeteer",
-    "target": "concept-mcp",
-    "relation": "relates_to",
-    "label": "MCP 구현체"
-  },
-  {
-    "source": "mcp-postgres",
-    "target": "concept-mcp",
-    "relation": "relates_to",
-    "label": "MCP 구현체"
-  },
-  {
-    "source": "mcp-memory",
-    "target": "concept-mcp",
-    "relation": "relates_to",
-    "label": "MCP 구현체"
-  },
+  { "source": "model-deepseek-r1", "target": "comp-deepseek", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-deepseek-v3", "target": "comp-deepseek", "relation": "developed_by", "label": "개발사" },
 
-  {
-    "source": "model-claude-3-7-sonnet",
-    "target": "concept-reasoning-effort",
-    "relation": "relates_to",
-    "label": "하이브리드 조절"
-  },
-  {
-    "source": "model-o3-mini",
-    "target": "concept-reasoning-effort",
-    "relation": "relates_to",
-    "label": "3단계 에포트 제어"
-  },
-  {
-    "source": "model-gemini-2-5-pro",
-    "target": "concept-context-window",
-    "relation": "relates_to",
-    "label": "200만 초대형 컨텍스트"
-  },
-  {
-    "source": "model-claude-3-7-sonnet",
-    "target": "mcp-filesystem",
-    "relation": "compatible_with",
-    "label": "도구 연동 호환"
-  },
-  {
-    "source": "model-claude-3-7-sonnet",
-    "target": "mcp-github",
-    "relation": "compatible_with",
-    "label": "에이전트 코딩 연동"
-  }
+  { "source": "model-grok-3", "target": "comp-xai", "relation": "developed_by", "label": "개발사" },
+
+  { "source": "model-kimi-k1-5", "target": "comp-moonshot", "relation": "developed_by", "label": "개발사" },
+
+  { "source": "model-qwen-2-5-max", "target": "comp-alibaba", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-qwen-2-5-coder", "target": "comp-alibaba", "relation": "developed_by", "label": "개발사" },
+
+  { "source": "model-claude-3-7-sonnet", "target": "model-claude-3-5-sonnet", "relation": "successor_of", "label": "후속 모델" },
+  { "source": "model-o3-mini", "target": "model-o1", "relation": "successor_of", "label": "경량화 후속" },
+  { "source": "model-gemini-2-5-pro", "target": "model-gemini-2-0-flash", "relation": "successor_of", "label": "차세대 플래그십" },
+  { "source": "model-deepseek-r1", "target": "model-deepseek-v3", "relation": "successor_of", "label": "추론 특화 파생" },
+
+  { "source": "model-claude-3-7-sonnet", "target": "mcp-filesystem", "relation": "compatible_with", "label": "도구 호환" },
+  { "source": "model-claude-3-7-sonnet", "target": "mcp-github", "relation": "compatible_with", "label": "에이전트 코딩" },
+  { "source": "model-gemini-2-5-flash", "target": "mcp-brave-search", "relation": "compatible_with", "label": "실시간 검색 연동" },
+  { "source": "model-gemini-2-5-pro", "target": "mcp-postgres", "relation": "compatible_with", "label": "DB 분석 연동" },
+  { "source": "model-qwen-2-5-coder", "target": "mcp-filesystem", "relation": "compatible_with", "label": "로컬 파일 조작" },
+  { "source": "model-gpt-4o", "target": "mcp-slack", "relation": "compatible_with", "label": "협업 툴 연동" },
+
+  { "source": "mcp-filesystem", "target": "concept-mcp", "relation": "relates_to", "label": "MCP 구현체" },
+  { "source": "mcp-github", "target": "concept-mcp", "relation": "relates_to", "label": "MCP 구현체" },
+  { "source": "mcp-brave-search", "target": "concept-mcp", "relation": "relates_to", "label": "MCP 구현체" },
+  { "source": "mcp-puppeteer", "target": "concept-mcp", "relation": "relates_to", "label": "MCP 구현체" },
+  { "source": "mcp-postgres", "target": "concept-mcp", "relation": "relates_to", "label": "MCP 구현체" },
+  { "source": "mcp-memory", "target": "concept-mcp", "relation": "relates_to", "label": "MCP 구현체" },
+  { "source": "mcp-slack", "target": "concept-mcp", "relation": "relates_to", "label": "MCP 구현체" },
+
+  { "source": "model-claude-3-7-sonnet", "target": "concept-reasoning-effort", "relation": "relates_to", "label": "하이브리드 조절" },
+  { "source": "model-o3-mini", "target": "concept-reasoning-effort", "relation": "relates_to", "label": "3단계 에포트 제어" },
+  { "source": "model-deepseek-r1", "target": "concept-reasoning-effort", "relation": "relates_to", "label": "상시 사고 사슬" },
+  { "source": "model-gemini-2-5-pro", "target": "concept-context-window", "relation": "relates_to", "label": "200만 초대형 컨텍스트" }
 ]
