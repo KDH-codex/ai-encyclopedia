@@ -1,30 +1,29 @@
 [
-  { "source": "model-o1-preview", "target": "comp-openai", "relation": "developed_by", "label": "개발사" },
-  { "source": "model-o1-mini", "target": "comp-openai", "relation": "developed_by", "label": "개발사" },
-  { "source": "model-gpt-4o", "target": "comp-openai", "relation": "developed_by", "label": "개발사" },
-  { "source": "model-gpt-4o-mini", "target": "comp-openai", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-claude-opus-5-5", "target": "comp-anthropic", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-claude-sonnet-5-5", "target": "comp-anthropic", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-claude-fable-5-1", "target": "comp-anthropic", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-claude-3-7-sonnet", "target": "comp-anthropic", "relation": "developed_by", "label": "개발사" },
 
-  { "source": "model-claude-3-5-sonnet", "target": "comp-anthropic", "relation": "developed_by", "label": "개발사" },
-  { "source": "model-claude-3-5-haiku", "target": "comp-anthropic", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-gemini-4-argon", "target": "comp-google", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-gemini-3-8-flash", "target": "comp-google", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-gemini-2-5-pro", "target": "comp-google", "relation": "developed_by", "label": "개발사" },
 
-  { "source": "model-gemini-1-5-pro-002", "target": "comp-google", "relation": "developed_by", "label": "개발사" },
-  { "source": "model-gemini-1-5-flash-002", "target": "comp-google", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-gpt-6-astra", "target": "comp-openai", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-gpt-6-1-sol", "target": "comp-openai", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-o3-mini", "target": "comp-openai", "relation": "developed_by", "label": "개발사" },
 
-  { "source": "model-llama-3-1-405b", "target": "comp-meta", "relation": "developed_by", "label": "개발사" },
-  { "source": "model-llama-3-2-vision", "target": "comp-meta", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-grok-4-7", "target": "comp-xai", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-deepseek-r1", "target": "comp-deepseek", "relation": "developed_by", "label": "개발사" },
 
-  { "source": "model-qwen-2-5-72b", "target": "comp-alibaba", "relation": "developed_by", "label": "개발사" },
-  { "source": "model-grok-2", "target": "comp-xai", "relation": "developed_by", "label": "개발사" },
-  { "source": "model-deepseek-v2-5", "target": "comp-deepseek", "relation": "developed_by", "label": "개발사" },
+  { "source": "model-claude-opus-5-5", "target": "model-claude-3-7-sonnet", "relation": "successor_of", "label": "후속 플래그십" },
+  { "source": "model-gemini-4-argon", "target": "model-gemini-2-5-pro", "relation": "successor_of", "label": "후속 플래그십" },
+  { "source": "model-gpt-6-1-sol", "target": "model-gpt-6-astra", "relation": "successor_of", "label": "효율화 파생" },
 
-  { "source": "model-o1-mini", "target": "model-o1-preview", "relation": "successor_of", "label": "경량화 모델" },
-  { "source": "model-gpt-4o-mini", "target": "model-gpt-4o", "relation": "successor_of", "label": "가성비 소형화" },
-  { "source": "model-gemini-1-5-pro-002", "target": "model-gemini-1-5-flash-002", "relation": "successor_of", "label": "패밀리 모델" },
-
-  { "source": "model-claude-3-5-sonnet", "target": "mcp-filesystem", "relation": "compatible_with", "label": "도구 호환" },
-  { "source": "model-claude-3-5-sonnet", "target": "mcp-github", "relation": "compatible_with", "label": "코딩 에이전트" },
-  { "source": "model-gemini-1-5-pro-002", "target": "mcp-postgres", "relation": "compatible_with", "label": "대용량 DB 분석" },
-  { "source": "model-gemini-1-5-flash-002", "target": "mcp-brave-search", "relation": "compatible_with", "label": "실시간 검색 연동" },
+  { "source": "model-claude-opus-5-5", "target": "mcp-filesystem", "relation": "compatible_with", "label": "에이전트 조작" },
+  { "source": "model-claude-sonnet-5-5", "target": "mcp-github", "relation": "compatible_with", "label": "코딩 워크플로" },
+  { "source": "model-gemini-4-argon", "target": "mcp-postgres", "relation": "compatible_with", "label": "기업 DB 분석" },
+  { "source": "model-gemini-3-8-flash", "target": "mcp-brave-search", "relation": "compatible_with", "label": "실시간 검색" },
+  { "source": "model-gpt-6-1-sol", "target": "mcp-puppeteer", "relation": "compatible_with", "label": "브라우저 자동화" },
 
   { "source": "mcp-filesystem", "target": "concept-mcp", "relation": "relates_to", "label": "MCP 구현체" },
   { "source": "mcp-github", "target": "concept-mcp", "relation": "relates_to", "label": "MCP 구현체" },
@@ -33,6 +32,6 @@
   { "source": "mcp-postgres", "target": "concept-mcp", "relation": "relates_to", "label": "MCP 구현체" },
   { "source": "mcp-memory", "target": "concept-mcp", "relation": "relates_to", "label": "MCP 구현체" },
 
-  { "source": "model-o1-preview", "target": "concept-reasoning-effort", "relation": "relates_to", "label": "추론 패러다임 창시" },
-  { "source": "model-gemini-1-5-pro-002", "target": "concept-context-window", "relation": "relates_to", "label": "200만 컨텍스트" }
+  { "source": "model-claude-opus-5-5", "target": "concept-adaptive-thinking", "relation": "relates_to", "label": "적응형 사고 탑재" },
+  { "source": "model-gpt-6-1-sol", "target": "concept-alignment-index", "relation": "relates_to", "label": "안정성 1위" }
 ]
